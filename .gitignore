@@ -166,4 +166,4 @@ design
 exports
 bin-debug
 bin-release
-
+service/bin-debug

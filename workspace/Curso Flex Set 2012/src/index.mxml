@@ -7,6 +7,25 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
+	<s:Button x="10" y="10" label="Button"/>
+	<s:DataGrid x="10" y="39" requestedRowCount="4">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="dataField1" headerText="Column 1"></s:GridColumn>
+				<s:GridColumn dataField="dataField2" headerText="Column 2"></s:GridColumn>
+				<s:GridColumn dataField="dataField3" headerText="Column 3"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+		<s:typicalItem>
+			<fx:Object dataField1="Sample Data" dataField2="Sample Data" dataField3="Sample Data"></fx:Object>
+		</s:typicalItem>
+		<s:ArrayList>
+			<fx:Object dataField1="data1" dataField2="data1" dataField3="data1"></fx:Object>
+			<fx:Object dataField1="data2" dataField2="data2" dataField3="data2"></fx:Object>
+			<fx:Object dataField1="data3" dataField2="data3" dataField3="data3"></fx:Object>
+			<fx:Object dataField1="data4" dataField2="data4" dataField3="data4"></fx:Object>
+		</s:ArrayList>
+	</s:DataGrid>
 	
 	
 	
