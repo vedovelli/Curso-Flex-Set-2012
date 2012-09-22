@@ -18,6 +18,7 @@
     <application path="index.mxml"/>
     <application path="index_aula1_p1.mxml"/>
     <application path="index_aula1_p2.mxml"/>
+    <application path="index_aula1_p3.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
