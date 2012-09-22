@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   minWidth="955" minHeight="600">
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
 	
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
-	</fx:Declarations>
-	<s:Button x="10" y="10" label="Button"/>
-	<s:DataGrid x="10" y="39" requestedRowCount="4">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			private var _dp:ArrayCollection = new ArrayCollection([
+				{data: 'ved', label: 'Fabio Vedovelli'},
+				{data: 'beto', label: 'Beto Alves'},
+				{data: 'gustavo', label: 'Gustavo de Souza'}
+			]);
+		]]>
+	</fx:Script>	
+
+	<s:ComboBox x="10" y="10" dataProvider="{_dp}" selectedIndex="0"/>
+	
+	<s:DropDownList x="175" y="10" dataProvider="{_dp}" selectedIndex="0"></s:DropDownList>
+	
+	<s:DataGrid x="10" y="41" requestedRowCount="4" dataProvider="{_dp}">
 		<s:columns>
 			<s:ArrayList>
-				<s:GridColumn dataField="dataField1" headerText="Column 1"></s:GridColumn>
-				<s:GridColumn dataField="dataField2" headerText="Column 2"></s:GridColumn>
-				<s:GridColumn dataField="dataField3" headerText="Column 3"></s:GridColumn>
+				<s:GridColumn dataField="label" headerText="Pessoa"></s:GridColumn>
+				
 			</s:ArrayList>
 		</s:columns>
-		<s:typicalItem>
-			<fx:Object dataField1="Sample Data" dataField2="Sample Data" dataField3="Sample Data"></fx:Object>
-		</s:typicalItem>
-		<s:ArrayList>
-			<fx:Object dataField1="data1" dataField2="data1" dataField3="data1"></fx:Object>
-			<fx:Object dataField1="data2" dataField2="data2" dataField3="data2"></fx:Object>
-			<fx:Object dataField1="data3" dataField2="data3" dataField3="data3"></fx:Object>
-			<fx:Object dataField1="data4" dataField2="data4" dataField3="data4"></fx:Object>
-		</s:ArrayList>
 	</s:DataGrid>
 	
-	
-	
+	<s:List x="10" y="178" width="277" dataProvider="{_dp}"></s:List>
 	
 </s:Application>
