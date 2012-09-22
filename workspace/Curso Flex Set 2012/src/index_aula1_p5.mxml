@@ -3,18 +3,11 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:login="com.vedovelli.view.login.*" 
-			   xmlns:vendas="com.vedovelli.view.vendas.*"
-			   creationComplete="init(event)">
+			   xmlns:vendas="com.vedovelli.view.vendas.*">
 	
 	<fx:Script>
 		<![CDATA[
-			import mx.events.FlexEvent;
 				
-			protected function init(event:FlexEvent):void
-			{
-				trace(vendas);
-			}
-			
 		]]>
 	</fx:Script>	
 	
