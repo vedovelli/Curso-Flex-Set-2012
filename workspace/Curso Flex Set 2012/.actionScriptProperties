@@ -19,6 +19,7 @@
     <application path="index_aula1_p1.mxml"/>
     <application path="index_aula1_p2.mxml"/>
     <application path="index_aula1_p3.mxml"/>
+    <application path="index_aula_p4.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
