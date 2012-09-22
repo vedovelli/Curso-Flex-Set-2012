@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%">
+
+	<s:Form id="form" width="200" height="200" defaultButton="{submitButton}">
+		<s:FormHeading label="Nova venda"/>
+		<s:FormItem label="Descrição" width="100%" required="false">
+			
+		</s:FormItem>	
+		<s:Button id="submitButton" label="Salvar"/>
+	</s:Form>
+	
+	
+	
+</s:NavigatorContent>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					width="100%" height="100%">
+	
+	<s:Panel width="500" height="225" horizontalCenter="0"
+			 title="Seja bem vindo ao sistema lindo de morrer" verticalCenter="0">
+		<s:Form x="10" y="10" width="253" height="172">
+			<s:FormItem width="231" label="Usuario">
+				<s:TextInput width="155"/>
+			</s:FormItem>
+			<s:FormItem width="231" label="Senha">
+				<s:TextInput width="155"/>
+			</s:FormItem>
+			<s:FormItem width="231">
+				<s:Button label="Logar"/>
+			</s:FormItem>
+		</s:Form>
+		<mx:VRule x="269" y="15" width="1" height="167"/>
+		<s:TextArea x="278" y="15" width="210" height="83" borderVisible="false" editable="false"
+					text="Caso tenha esquecido sua senha, clique no botão abaixo para que possamos enviar um lembrete&#xd;"/>
+		<s:Button x="278" y="82" width="210" label="Esqueci minha senha"/>
+		
+	</s:Panel>
+	
+	
+</s:NavigatorContent>

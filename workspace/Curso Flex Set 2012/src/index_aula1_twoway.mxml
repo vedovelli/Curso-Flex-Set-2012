@@ -6,7 +6,9 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
+			import mx.utils.ObjectUtil;
 			
 			[Bindable] private var _pessoa:Object;
 			
@@ -24,7 +26,13 @@
 			
 			protected function changeHandler(event:FlexEvent):void
 			{
-				_pessoa = event.currentTarget.selectedItem;
+				_pessoa = lista.selectedItem;
+			}
+			
+			protected function sub(event:MouseEvent):void
+			{
+//				_dp.getItemAt(lista.selectedIndex).label = txtNome.text;
+				Alert.show(ObjectUtil.toString(_dp));
 			}
 			
 		]]>
@@ -35,9 +43,9 @@
 				dataProvider="{_dp}"></s:List>
 		<s:Form id="form" width="100%" defaultButton="{submitButton}">
 			<s:FormItem label="Nome" width="100%" required="false">
-				<s:TextInput width="100%" text="@{_pessoa.label}"/>
+				<s:TextInput change="_dp.refresh()" width="100%" id="txtNome" text="@{_pessoa.label}"/>
 			</s:FormItem>	
-			<s:Button id="submitButton" label="Submit"/>
+			<s:Button id="submitButton" label="Submit" click="sub(event)"/>
 		</s:Form>
 		
 	</s:VGroup>	
