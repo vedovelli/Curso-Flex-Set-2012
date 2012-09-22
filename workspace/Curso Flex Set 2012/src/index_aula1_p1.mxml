@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx">
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
+			[Bindable]
+			private var _dp:ArrayCollection = new ArrayCollection([
+				{data: 'ved', label: 'Fabio Vedovelli'},
+				{data: 'beto', label: 'Beto Alves'},
+				{data: 'gustavo', label: 'Gustavo de Souza'}
+			]);
+			
+			protected function addObj(event:MouseEvent):void
+			{
+				_dp.addItemAt({data: 'wagner', label: 'Wagner Souza'}, 0);
+			}
+			
+		]]>
+	</fx:Script>	
+
+	<s:ComboBox x="10" y="10" dataProvider="{_dp}" selectedIndex="0"/>
+	
+	<s:DropDownList x="175" y="10" dataProvider="{_dp}" selectedIndex="0"></s:DropDownList>
+	
+	<s:DataGrid x="10" y="41" requestedRowCount="4" dataProvider="{_dp}">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="label" headerText="Pessoa"></s:GridColumn>
+				
+			</s:ArrayList>
+		</s:columns>
+	</s:DataGrid>
+	
+	<s:List x="10" y="178" width="277" dataProvider="{_dp}"></s:List>
+	
+	<s:Button x="9" y="303" label="Add objeto" click="addObj(event)"/>
+	
+</s:Application>
