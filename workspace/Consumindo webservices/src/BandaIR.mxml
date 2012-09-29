@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:ItemRenderer xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:s="library://ns.adobe.com/flex/spark" 
+				xmlns:mx="library://ns.adobe.com/flex/mx" 
+				autoDrawBackground="true" width="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			private var _imagem:String;
+			
+			override public function set data(value:Object):void{
+				super.data = value;
+				nomeBanda.text = data.name;
+				_imagem = data.image[1];
+			}
+		]]>
+	</fx:Script>
+	
+	<s:SkinnableContainer skinClass="BandaSkin" width="100%">
+		<s:layout>
+			<s:HorizontalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5"/>
+			
+		</s:layout>
+		
+		<s:Image id="image" width="65" height="65" source="{_imagem}"/>
+		
+		<s:VGroup left="75">
+			<s:Label id="nomeBanda"/>
+		</s:VGroup>
+		
+	</s:SkinnableContainer>
+	
+</s:ItemRenderer>

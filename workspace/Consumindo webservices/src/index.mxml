@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   creationComplete="init(event)">
+	
+	<fx:Declarations>
+		<s:HTTPService id="service"
+					   url="http://ws.audioscrobbler.com/2.0/"
+					   fault="onFault(event)"
+					   result="onResult(event)"
+					   resultFormat="e4x"
+					   showBusyCursor="true"/>
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import mx.collections.XMLListCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var _bandas:XMLListCollection;
+			
+			protected function init(event:FlexEvent):void
+			{
+				var params:Object = new Object();
+					params.method='user.gettopartists';
+					params.user='vedovelli';
+					params.api_key='b25b959554ed76058ac220b7b2e0a026';
+				service.send(params);
+			}
+			
+			protected function onResult(event:ResultEvent):void
+			{
+				_bandas = new XMLListCollection(event.result.topartists.artist as XMLList);
+			}
+			
+			protected function onFault(event:FaultEvent):void
+			{
+				Alert.show('Falha');		
+			}
+			
+			protected function listaBandas_valueCommitHandler(event:FlexEvent):void
+			{
+				navigateToURL(new URLRequest(listaBandas.selectedItem.url), '_blank');
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:List id="listaBandas" top="10" left="10" right="10" bottom="10"
+			dataProvider="{_bandas}" itemRenderer="BandaIR"
+			valueCommit="listaBandas_valueCommitHandler(event)">
+		
+		<s:layout>
+			<s:TileLayout horizontalGap="5" verticalGap="5"/>
+		</s:layout>
+		
+	</s:List>
+	
+</s:Application>
