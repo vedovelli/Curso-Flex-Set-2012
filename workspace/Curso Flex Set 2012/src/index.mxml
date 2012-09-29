@@ -4,7 +4,7 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:login="com.vedovelli.view.login.*" 
 			   xmlns:vendas="com.vedovelli.view.vendas.*"
-			   creationComplete="init(event)">
+			   creationComplete="init(event)" xmlns:usuarios="com.vedovelli.view.usuarios.*">
 	
 	<fx:Script>
 		<![CDATA[
@@ -24,8 +24,11 @@
 		]]>
 	</fx:Script>	
 	
-	<mx:ViewStack id="vs" width="100%" height="100%">
+	<mx:ViewStack id="vs" width="100%" height="100%"
+				  paddingBottom="10" paddingLeft="10"
+				  paddingRight="10" paddingTop="10">
 		<login:LoginUI id="login"/>
+		<usuarios:UsuariosUI id="usuarios"/>
 		<vendas:VendasUI id="vendas"/>
 	</mx:ViewStack>
 	
