@@ -8,11 +8,17 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 				
 			protected function init(event:FlexEvent):void
 			{
-				trace(vendas);
+				this.addEventListener('login_ok', login_ok);
+			}
+			
+			protected function login_ok(event:Event):void
+			{
+				vs.selectedIndex = 1;
 			}
 			
 		]]>

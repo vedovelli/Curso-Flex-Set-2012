@@ -9,13 +9,16 @@ class AcessoController{
 			$retorno = array();
 			$hasher = new PasswordHash(8, false);
 			$condicao = array("conditions" => "usuario = '".$data->usuario."'");
+			
+			# active record em ação
 			$usuario = Usuario::find($condicao);
 			
 			if( count($usuario) === 0 ){
 				$retorno['retorno']='Usuário não encontrado';
 			} else {
 				if( $hasher->CheckPassword($data->senha, $usuario->senha) ){
-					$retorno['retorno'] = 'ok';
+					$data->id = $usuario->id;
+					$retorno['retorno'] = $data;
 				} else {
 					$retorno['retorno']='Senha incorreta';
 				}

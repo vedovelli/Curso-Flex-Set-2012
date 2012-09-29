@@ -4,8 +4,36 @@
 					xmlns:mx="library://ns.adobe.com/flex/mx"
 					width="100%" height="100%" currentState="login">
 	
+	<fx:Declarations>
+		<s:RemoteObject id="ro" 
+						source="AcessoController"
+						destination="zend"
+						endpoint="http://cf.local/php/gateway.php"
+						showBusyCursor="true">
+			
+			<s:method name="login" 
+					  result="onLoginResult(event)" 
+					  fault="onLoginFault(event)">
+				<s:arguments>
+					<data>{_usuario}</data>
+				</s:arguments>
+			</s:method>
+			
+		</s:RemoteObject>
+		
+	</fx:Declarations>
+	
 	<fx:Script>
 		<![CDATA[
+			import com.vedovelli.vo.UsuarioVO;
+			
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var _usuario:UsuarioVO = new UsuarioVO();
+			
 			protected function recuperar_senha(event:MouseEvent):void
 			{
 				this.currentState = 'recuperar_senha';
@@ -16,9 +44,29 @@
 				this.currentState = 'login';
 			}
 			
+			protected function onLoginResult(event:ResultEvent):void
+			{
+				if( event.result.retorno is UsuarioVO ){
+					var ev:Event = new Event('login_ok', true, false);
+					dispatchEvent(ev);
+				} else {
+					feedback.visible = true;
+					feedback.text = event.result.retorno;
+				}
+			}
+			
+			protected function onLoginFault(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultString);
+			}
+			
+			protected function fazer_login(event:MouseEvent):void
+			{
+				ro.login();
+			}
+			
 		]]>
 	</fx:Script>
-	
 	
 	<s:states>
 		<s:State name="login"/>
@@ -35,17 +83,18 @@
 	
 	<s:Panel id="container" width="500" height="225" horizontalCenter="0"
 			 title="Seja bem vindo ao sistema lindo de morrer" verticalCenter="0"
+			 height.login="245" horizontalCenter.login="0" verticalCenter.login="0"
 			 title.recuperar_senha="Recuperação de senha">
 		
-		<s:Form includeIn="login" x="10" y="10" width="253" height="172">
+		<s:Form includeIn="login" x="10" y="24" width="253" height="172">
 			<s:FormItem width="231" label="Usuario">
-				<s:TextInput width="155"/>
+				<s:TextInput text="@{_usuario.usuario}" width="155"/>
 			</s:FormItem>
 			<s:FormItem width="231" label="Senha">
-				<s:TextInput width="155"/>
+				<s:TextInput text="@{_usuario.senha}" displayAsPassword="true" width="155"/>
 			</s:FormItem>
 			<s:FormItem width="231">
-				<s:Button label="Logar"/>
+				<s:Button label="Logar" click="fazer_login(event)"/>
 			</s:FormItem>
 		</s:Form>
 		
@@ -66,6 +115,10 @@
 				<s:Button label="Enviar link"/>
 			</s:FormItem>
 		</s:Form>
+		
+		<s:Label id="feedback" color="#c00000" 
+				 textAlign="center" fontWeight="bold" 
+				 includeIn="login" x="10" y="8" width="251"/>
 		
 	</s:Panel>
 	
