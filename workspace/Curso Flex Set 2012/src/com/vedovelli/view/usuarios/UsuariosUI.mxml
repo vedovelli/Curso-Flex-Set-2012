@@ -34,7 +34,7 @@
 			<s:method name="remover" 
 					  result="onremoverResult(event)">
 				<s:arguments>
-					<id>{_usuario.id}</id>
+					<id>{_usuarioId}</id>
 				</s:arguments>
 			</s:method>
 
@@ -45,12 +45,18 @@
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
 			
+			import events.NotificacaoEvent;
+			import events.UsuariosEvent;
+			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var _usuarioId:int;
 			
 			[Bindable]
 			private var _lista:ArrayCollection;
@@ -63,6 +69,7 @@
 			
 			protected function init(event:FlexEvent):void
 			{
+				this.addEventListener(UsuariosEvent.REMOVER, removerUsuario);
 				_usuario = new UsuarioVO();
 				ro.listar();
 			}
@@ -121,6 +128,13 @@
 			{
 				_lista.addItemAt(event.result, 0);
 				limpar();
+				
+				var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
+					ev.headerText = 'Usuário';
+					ev.bodyText = 'Usuário criado com sucesso!';
+				
+				this.dispatchEvent(ev);
+				
 			}
 			
 			protected function listaNiveis_valueCommitHandler(event:FlexEvent):void
@@ -134,6 +148,11 @@
 					var index:int = listaUsuarios.selectedIndex;
 					_lista.setItemAt(event.result, index);
 					limpar();
+					var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
+					ev.headerText = 'Usuário';
+					ev.bodyText = 'Usuário atualizado com sucesso!';
+					
+					this.dispatchEvent(ev);
 				}
 			}
 			
@@ -142,18 +161,12 @@
 				if(event.result){
 					_lista.removeItemAt(listaUsuarios.selectedIndex);
 					limpar();
+					var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
+					ev.headerText = 'Usuário';
+					ev.bodyText = 'Usuário removido com sucesso!';
+					
+					this.dispatchEvent(ev);
 				}
-			}
-			
-			protected function btnDeletar_clickHandler(event:MouseEvent):void
-			{
-				Alert.show(
-					'Tem certeza que deseja excluir '+ _usuario.usuario + '?', 
-					'ATENÇÃO', 
-					Alert.YES|Alert.NO, 
-					null, 
-					fazer_remocao 
-				);
 			}
 			
 			private function fazer_remocao(event:CloseEvent):void
@@ -173,6 +186,18 @@
 				_usuario.nivel = listaNiveis.selectedItem.data;
 			}
 			
+			protected function removerUsuario(event:UsuariosEvent):void
+			{
+				_usuarioId = event.usuario.id;
+				Alert.show(
+					'Tem certeza que deseja excluir '+ _usuario.usuario + '?', 
+					'ATENÇÃO', 
+					Alert.YES|Alert.NO, 
+					null, 
+					fazer_remocao 
+				);
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -188,6 +213,7 @@
 				<s:GridColumn dataField="id" headerText="ID" width="50"></s:GridColumn>
 				<s:GridColumn dataField="usuario" headerText="Usuário"></s:GridColumn>
 				<s:GridColumn dataField="nivel" headerText="Nível"></s:GridColumn>
+				<s:GridColumn headerText="Deletar" width="85" itemRenderer="com.vedovelli.view.usuarios.ir.BotaoDeletarIR"></s:GridColumn>
 			</s:ArrayList>
 		</s:columns>
 		
@@ -210,7 +236,7 @@
 		<s:FormItem>
 			<s:HGroup>
 				<s:Button id="btnSalvar" label="Salvar" click="btnSalvar_clickHandler(event)"/>
-				<s:Button id="btnDeletar" enabled="{listaUsuarios.selectedIndex > -1}" label="Deletar" click="btnDeletar_clickHandler(event)"/>
+				<!--<s:Button id="btnDeletar" enabled="{listaUsuarios.selectedIndex > -1}" label="Deletar" click="btnDeletar_clickHandler(event)"/>-->
 				<s:Button id="btnLimpar" enabled="{listaUsuarios.selectedIndex > -1}" label="Limpar" click="limpar()"/>
 			</s:HGroup>
 		</s:FormItem>

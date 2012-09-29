@@ -4,21 +4,41 @@
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:login="com.vedovelli.view.login.*" 
 			   xmlns:vendas="com.vedovelli.view.vendas.*"
-			   creationComplete="init(event)" xmlns:usuarios="com.vedovelli.view.usuarios.*">
+			   xmlns:usuarios="com.vedovelli.view.usuarios.*" 
+			   xmlns:common="com.vedovelli.view.common.*"
+			   creationComplete="init(event)">
 	
 	<fx:Script>
 		<![CDATA[
+			import com.vedovelli.vo.UsuarioVO;
+			
+			import events.LoginEvent;
+			import events.NotificacaoEvent;
+			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
+			import mx.utils.ObjectUtil;
+			
+			[Bindable]
+			private var _usuario:UsuarioVO;
 				
 			protected function init(event:FlexEvent):void
 			{
-				this.addEventListener('login_ok', login_ok);
+				this.addEventListener(LoginEvent.LOGADO, login_ok);
+				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
 			}
 			
-			protected function login_ok(event:Event):void
+			protected function login_ok(event:LoginEvent):void
 			{
 				vs.selectedIndex = 1;
+				_usuario = event.usuario;
+			}
+			
+			protected function gerenciar_notificacao(event:NotificacaoEvent):void
+			{
+				notificacao.headerText = event.headerText;
+				notificacao.bodyText = event.bodyText;
+				notificacao.componentVisible = true;
 			}
 			
 		]]>
@@ -32,4 +52,10 @@
 		<vendas:VendasUI id="vendas"/>
 	</mx:ViewStack>
 	
+	<common:Notificacao id="notificacao"/>
+	
+	<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
+			 visible="{vs.selectedIndex > 0}"/>
+	
 </s:Application>
+

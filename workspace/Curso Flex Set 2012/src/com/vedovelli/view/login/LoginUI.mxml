@@ -27,6 +27,8 @@
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
 			
+			import events.LoginEvent;
+			
 			import mx.controls.Alert;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
@@ -47,7 +49,8 @@
 			protected function onLoginResult(event:ResultEvent):void
 			{
 				if( event.result.retorno is UsuarioVO ){
-					var ev:Event = new Event('login_ok', true, false);
+					var ev:LoginEvent = new LoginEvent(LoginEvent.LOGADO);
+					ev.usuario = event.result.retorno as UsuarioVO;
 					dispatchEvent(ev);
 				} else {
 					feedback.visible = true;
