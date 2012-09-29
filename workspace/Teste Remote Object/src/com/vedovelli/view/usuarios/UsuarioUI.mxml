@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%" height="100%"
+		 creationComplete="init()">
+	
+	<fx:Declarations>
+		<s:RemoteObject id="ro" 
+						source="UsuarioController"
+						destination="zend"
+						endpoint="http://cf.local/php/gateway.php"
+						fault="onFault(event)"
+						showBusyCursor="true">
+			
+			<s:method name="listar" result="listaResult(event)" fault="onFault(event)"></s:method>			
+			<s:method name="remover" result="onRemoverResult(event)" fault="onFault(event)">
+				<s:arguments>
+					<id>{_usuario.id}</id>
+				</s:arguments>
+			</s:method>
+			<s:method name="criar" result="onCriarResult(event)" fault="onFault(event)">
+				<s:arguments>
+					<id>{_usuario}</id>
+				</s:arguments>
+			</s:method>
+			<s:method name="atualizar" result="onAtualizarResult(event)" fault="onFault(event)">
+				<s:arguments>
+					<id>{_usuario}</id>
+				</s:arguments>
+			</s:method>
+			
+		</s:RemoteObject>
+		
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.vedovelli.vo.UsuarioVO;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			
+			[Bindable]
+			private var _lista:ArrayCollection;
+			
+			[Bindable]
+			private var _listaNiveis:ArrayCollection = new ArrayCollection([
+				{data: 'administrador', label: 'Administrador'},
+				{data: 'usuario', label: 'usuário'}
+			]);
+			
+			[Bindable]
+			private var _usuario:UsuarioVO = new UsuarioVO();
+			
+			protected function init():void
+			{
+				limpar();
+				ro.addEventListener(ResultEvent.RESULT, listaResult);
+				ro.listar();
+			}
+			
+			protected function onFault(event:FaultEvent):void
+			{
+				Alert.show('Falha geral!');
+			}
+			
+			protected function listaResult(event:ResultEvent):void
+			{
+				_lista = new ArrayCollection(event.result as Array);
+			}
+			
+			protected function btnSalvar_clickHandler(event:MouseEvent):void
+			{
+				if(_usuario.id > 0){
+					ro.atualizar();	
+				} else {
+					ro.criar();
+				}
+			}
+			
+			protected function btnExcluir_clickHandler(event:MouseEvent):void
+			{
+				ro.addEventListener(ResultEvent.RESULT, onRemoverResult);
+				ro.remover(_usuario.id);
+			}
+			
+			protected function btnLimpar_clickHandler(event:MouseEvent):void
+			{
+				limpar();
+			}
+			
+			private function limpar():void
+			{
+				lista.selectedIndex = -1;
+				_usuario = new UsuarioVO();
+				_usuario.nivel = 'adm';
+				cbNiveis.selectedIndex = 0;
+			}
+			
+			protected function lista_valueCommitHandler(event:FlexEvent):void
+			{
+				_usuario = lista.selectedItem as UsuarioVO;
+				selecionarValorCombo();
+			}
+			
+			protected function onRemoverResult(event:ResultEvent):void
+			{
+				if(event.result){
+					_lista.removeItemAt(lista.selectedIndex);
+					limpar();
+				} else {
+					Alert.show('Falha na remoção do usuário');
+				}
+			}
+			
+			protected function onCriarResult(event:ResultEvent):void
+			{
+				if(event.result is UsuarioVO){
+					_lista.addItemAt(event.result, 0);
+					limpar();	
+				} else {
+					Alert.show('Usuário não criado!');
+				}
+				
+			}
+			
+			protected function onAtualizarResult(event:ResultEvent):void
+			{
+				if(event.result is UsuarioVO){
+					var index:int = lista.selectedIndex;
+					_lista.setItemAt(event.result, index);
+					limpar();	
+				} else {
+					Alert.show('Usuário não atualizado!');
+				}
+			}
+			
+			protected function cbNiveis_valueCommitHandler(event:FlexEvent):void
+			{
+				_usuario.nivel = cbNiveis.selectedItem.data;
+			}
+			
+			private function selecionarValorCombo():void
+			{
+				var i:int = 0;
+				var length:int = _listaNiveis.length;
+				for(i; i < length; i++){
+					if(_usuario != null){
+						if(_listaNiveis.getItemAt(i).data == _usuario.nivel){
+							cbNiveis.selectedIndex = i;
+							break;
+						}
+					}
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	<s:HGroup width="100%" height="100%">
+		<s:DataGrid id="lista" dataProvider="{_lista}" valueCommit="lista_valueCommitHandler(event)" width="100%" height="100%" requestedRowCount="4">
+			<s:columns>
+				<s:ArrayList>
+					<s:GridColumn dataField="id" headerText="ID"></s:GridColumn>
+					<s:GridColumn dataField="usuario" headerText="Usuário"></s:GridColumn>
+					<s:GridColumn dataField="nivel" headerText="Nível"></s:GridColumn>
+				</s:ArrayList>
+			</s:columns>
+		</s:DataGrid>
+		<s:Form width="100%" height="100%">
+			<s:FormHeading label="Gerenciamento de usuários"/>
+			<s:FormItem width="100%" label="Usuário">
+				<s:TextInput text="@{_usuario.usuario}" width="282"/>
+			</s:FormItem>
+			<s:FormItem width="100%" label="Senha">
+				<s:TextInput text="@{_usuario.senha}" width="282" displayAsPassword="true"/>
+			</s:FormItem>
+			<s:FormItem width="100%" label="Nível">
+				<s:DropDownList id="cbNiveis" dataProvider="{_listaNiveis}" valueCommit="cbNiveis_valueCommitHandler(event)" width="100%"/>
+			</s:FormItem>
+			<s:FormItem width="100%">
+				<s:HGroup width="100%">
+					<s:Button id="btnSalvar" label="Salvar" click="btnSalvar_clickHandler(event)"/>
+					<s:Button id="btnExcluir" label="Excluir" enabled="{lista.selectedIndex > -1}" click="btnExcluir_clickHandler(event)"/>
+					<s:Button id="btnLimpar" label="Limpar" enabled="{lista.selectedIndex > -1}" click="btnLimpar_clickHandler(event)"/>
+				</s:HGroup>
+			</s:FormItem>
+		</s:Form>
+		
+	</s:HGroup>  
+	
+	
+</s:Group>
