@@ -2,7 +2,8 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx"
-					width="100%" height="100%" currentState="login">
+					width="100%" height="100%" currentState="login"
+					creationComplete="init(event)">
 	
 	<fx:Declarations>
 		<s:RemoteObject id="ro" 
@@ -30,6 +31,7 @@
 			import events.LoginEvent;
 			
 			import mx.controls.Alert;
+			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
@@ -68,6 +70,12 @@
 				ro.login();
 			}
 			
+			protected function init(event:FlexEvent):void
+			{
+				_usuario.usuario = 'vedovelli';
+				_usuario.senha = '123';
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -89,7 +97,7 @@
 			 height.login="245" horizontalCenter.login="0" verticalCenter.login="0"
 			 title.recuperar_senha="Recuperação de senha">
 		
-		<s:Form includeIn="login" x="10" y="24" width="253" height="172">
+		<s:Form includeIn="login" x="10" y="24" width="253" height="172" defaultButton="{btnLogar}">
 			<s:FormItem width="231" label="Usuario">
 				<s:TextInput text="@{_usuario.usuario}" width="155"/>
 			</s:FormItem>
@@ -97,7 +105,7 @@
 				<s:TextInput text="@{_usuario.senha}" displayAsPassword="true" width="155"/>
 			</s:FormItem>
 			<s:FormItem width="231">
-				<s:Button label="Logar" click="fazer_login(event)"/>
+				<s:Button id="btnLogar" label="Logar" click="fazer_login(event)"/>
 			</s:FormItem>
 		</s:Form>
 		
