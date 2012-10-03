@@ -42,7 +42,8 @@ package com.vedovelli.presentation
 		[Inject(source="loginController.usuario", bind="true")]
 		public function set usuario(value:UsuarioVO):void
 		{
-//			usuario = value;
+			usuario = value;
+			currentState = 'logged';
 		}
 
 		public function doLogout():void

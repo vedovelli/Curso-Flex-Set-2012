@@ -50,7 +50,6 @@ package com.vedovelli.presentation
 			return _usuario;
 		}
 
-		[Inject(source="loginController.usuario", bind="true")]
 		public function set usuario(value:UsuarioVO):void
 		{
 			_usuario = value;
@@ -75,8 +74,9 @@ package com.vedovelli.presentation
 
 		public function init():void
 		{
-			_usuario.usuario = 'vedovelli';
-			_usuario.senha = '123';
+			usuario = new UsuarioVO();
+			usuario.usuario = 'vedovelli';
+			usuario.senha = '123';
 		}
 
 	}
