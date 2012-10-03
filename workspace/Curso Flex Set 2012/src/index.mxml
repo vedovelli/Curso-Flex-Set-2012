@@ -19,7 +19,7 @@
 			</swiz:beanProviders>
 			<swiz:config>
 				<swiz:SwizConfig 
-					eventPackages="com.vedovelli.events.*"
+					eventPackages="com.vedovelli.event.*"
 					viewPackages="com.vedovelli.view.*"/>
 			</swiz:config>
 		</swiz:Swiz>

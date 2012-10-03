@@ -7,6 +7,8 @@ package com.vedovelli.event
 	public class LoginEvent extends Event
 	{
 		public static const LOGADO:String = "LoginEvent_LOGADO";
+		public static const LOGIN:String = "LoginEvent_LOGIN";
+		public static const LOGOUT:String = "LoginEvent_LOGOUT";
 		
 		public var usuario:UsuarioVO;
 		

@@ -2,10 +2,45 @@
 <swiz:BeanProvider xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 xmlns:swiz="http://swiz.swizframework.org">
+		 xmlns:swiz="http://swiz.swizframework.org" xmlns:controller="com.vedovelli.controller.*" xmlns:presentation="com.vedovelli.presentation.*">
+	<fx:Script>
+		<![CDATA[
+			import com.vedovelli.presentation.BasePresentationModel;
+			import com.vedovelli.presentation.LoginPresentationModel;
+			import com.vedovelli.presentation.UsuariosPresentationModel;
+			
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			
+			protected function onFault(event:FaultEvent):void
+			{
+				Alert.show(event.fault.faultString, event.fault.faultDetail);
+			}
+			
+		]]>
+	</fx:Script>
 	
 	<fx:Declarations>
 		
+		<!--Presentation-->
+		<swiz:Prototype id="basePM" type="{BasePresentationModel}"/>
+		<swiz:Prototype id="usuariosPM" type="{UsuariosPresentationModel}"/>
+		<swiz:Prototype id="loginPM" type="{LoginPresentationModel}"/>
+		
+		<!--Controller-->
+		<controller:BaseController id="baseController"/>
+		<controller:LoginController id="loginController"/>
+		<controller:UsuariosController id="usuariosController"/>
+		
+		<!--Service-->
+		<s:RemoteObject id="ro" 
+						destination="zend"
+						endpoint="http://cf.local/php/gateway.php"
+						fault="onFault(event)"
+						showBusyCursor="true"/>
+		
+		<swiz:ServiceHelper id="sh"/>
+			
 	</fx:Declarations>
 	
 </swiz:BeanProvider>
