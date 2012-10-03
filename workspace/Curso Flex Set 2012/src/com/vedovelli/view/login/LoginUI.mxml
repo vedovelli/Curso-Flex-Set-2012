@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
-					xmlns:s="library://ns.adobe.com/flex/spark"
-					xmlns:mx="library://ns.adobe.com/flex/mx"
-					width="100%" height="100%" currentState="{pm.currentState}">
+		 xmlns:s="library://ns.adobe.com/flex/spark"
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%" height="100%" currentState="{pm.currentState}">
 
 	<fx:Script>
 		<![CDATA[
 			import com.vedovelli.presentation.LoginPresentationModel;
-			
- 			private var _pm:LoginPresentationModel;
-			
+
+			private var _pm:LoginPresentationModel;
+
 			[Bindable]
 			public function get pm():LoginPresentationModel
 			{
@@ -27,35 +27,35 @@
 			}
 		]]>
 	</fx:Script>
-	
+
 	<s:states>
 		<s:State name="login"/>
 		<s:State name="recuperar_senha"/>
 	</s:states>
-	
+
 	<s:Panel id="container" width="500" height="225" horizontalCenter="0"
 			 title="Seja bem vindo ao sistema lindo de morrer" verticalCenter="0"
 			 height.login="245" horizontalCenter.login="0" verticalCenter.login="0"
 			 title.recuperar_senha="Recuperação de senha">
-		
+
 		<s:Form includeIn="login" x="10" y="24" width="253" height="172" defaultButton="{btnLogar}">
 			<s:FormItem width="231" label="Usuario">
-				<s:TextInput text="@{pm.usuario.usuario}" width="155"/>
+				<s:TextInput width="155" text="@{pm.usuario.usuario}"/>
 			</s:FormItem>
 			<s:FormItem width="231" label="Senha">
-				<s:TextInput text="@{pm.usuario.senha}" displayAsPassword="true" width="155"/>
+				<s:TextInput width="155" displayAsPassword="true" text="@{pm.usuario.senha}"/>
 			</s:FormItem>
 			<s:FormItem width="231">
 				<s:Button id="btnLogar" label="Logar" click="pm.fazer_login(event)"/>
 			</s:FormItem>
 		</s:Form>
-		
+
 		<mx:VRule includeIn="login" x="269" y="15" width="1" height="167"/>
-		
+
 		<s:TextArea includeIn="login" x="278" y="15" width="210" height="83" borderVisible="false"
 					editable="false"
 					text="Caso tenha esquecido sua senha, clique no botão abaixo para que possamos enviar um lembrete&#xd;"/>
-		
+
 		<s:Button includeIn="login" x="278" y="82" width="210" label="Esqueci minha senha"
 				  click="pm.recuperar_senha(event)"/>
 		<s:Button includeIn="recuperar_senha" x="10" y="161" label="voltar" click="pm.voltar(event)"/>
@@ -67,13 +67,11 @@
 				<s:Button label="Enviar link"/>
 			</s:FormItem>
 		</s:Form>
-		
-		<s:Label color="#c00000" 
-				 textAlign="center" fontWeight="bold" 
-				 includeIn="login" x="10" y="8" width="251"
-				 visible="{pm.feedbackVisible}" text="{pm.feedbackText}"/>
-		
+
+		<s:Label includeIn="login" visible="{pm.feedbackVisible}" x="10" y="8" width="251"
+				 color="#c00000" fontWeight="bold" text="{pm.feedbackText}" textAlign="center"/>
+
 	</s:Panel>
-	
-	
+
+
 </s:Group>
