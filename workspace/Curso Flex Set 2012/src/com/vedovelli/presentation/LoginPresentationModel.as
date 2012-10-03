@@ -2,13 +2,8 @@ package com.vedovelli.presentation
 {
 	import com.vedovelli.event.LoginEvent;
 	import com.vedovelli.vo.UsuarioVO;
-	
+
 	import flash.events.MouseEvent;
-	
-	import mx.collections.ArrayCollection;
-	import mx.controls.Alert;
-	import mx.rpc.events.FaultEvent;
-	import mx.rpc.events.ResultEvent;
 
 	[Bindable]
 	public class LoginPresentationModel extends BasePresentationModel
@@ -17,7 +12,7 @@ package com.vedovelli.presentation
 		private var _currentState:String;
 		private var _feedbackVisible:Boolean;
 		private var _feedbackText:String;
-		
+
 		public function get feedbackText():String
 		{
 			return _feedbackText;
@@ -60,24 +55,24 @@ package com.vedovelli.presentation
 		{
 			_usuario = value;
 		}
-		
+
 		public function recuperar_senha(event:MouseEvent):void
 		{
 			currentState = 'recuperar_senha';
 		}
-		
+
 		public function voltar(event:MouseEvent):void
 		{
 			currentState = 'login';
 		}
-		
+
 		public function fazer_login(event:MouseEvent):void
 		{
 			var ev:LoginEvent = new LoginEvent(LoginEvent.LOGIN);
 			ev.usuario = usuario;
 			dispatcher.dispatchEvent(ev);
 		}
-		
+
 		public function init():void
 		{
 			_usuario.usuario = 'vedovelli';
@@ -86,3 +81,4 @@ package com.vedovelli.presentation
 
 	}
 }
+

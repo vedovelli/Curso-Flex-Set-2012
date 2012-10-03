@@ -11,7 +11,7 @@
 			   creationComplete="init(event)"
 			   currentState="not_logged"  
 			   >
-	
+
 	<fx:Declarations>
 		<swiz:Swiz>
 			<swiz:beanProviders>
@@ -19,84 +19,95 @@
 			</swiz:beanProviders>
 			<swiz:config>
 				<swiz:SwizConfig 
-					eventPackages="com.vedovelli.event.*"
-					viewPackages="com.vedovelli.view.*"/>
+								 eventPackages="com.vedovelli.event.*"
+								 viewPackages="com.vedovelli.view.*"/>
 			</swiz:config>
 		</swiz:Swiz>
 	</fx:Declarations>
-	
+
 	<fx:Script>
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
-			
+
 			import com.vedovelli.event.LoginEvent;
 			import com.vedovelli.event.NotificacaoEvent;
-			
+
 			import mx.events.FlexEvent;
-			
-			[Bindable]
+
 			private var _usuario:UsuarioVO;
-				
+
+			[Bindable]
+			public function get usuario():UsuarioVO
+			{
+				return _usuario;
+			}
+
+			[Inject(source="loginController.usuario", bind="true")]
+			public function set usuario(value:UsuarioVO):void
+			{
+				_usuario = value;
+			}
+
 			protected function init(event:FlexEvent):void
 			{
 				this.addEventListener(LoginEvent.LOGADO, login_ok);
 				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
 			}
-			
+
 			protected function login_ok(event:LoginEvent):void
 			{
 				_usuario = event.usuario;
 				this.currentState = 'logged';
 			}
-			
+
 			protected function gerenciar_notificacao(event:NotificacaoEvent):void
 			{
 				notificacao.headerText = event.headerText;
 				notificacao.bodyText = event.bodyText;
 				notificacao.componentVisible = true;
 			}
-			
+
 			protected function doLogout(event:MouseEvent):void
 			{
 				this.currentState = 'not_logged';
 			}
-			
+
 		]]>
 	</fx:Script>
-	
+
 	<s:states>
 		<s:State name="not_logged"/>
 		<s:State name="logged"/>
 	</s:states>
-	
+
 	<s:transitions>
 		<s:Transition fromState="*" toState="*">
 			<s:CrossFade targets="{[appUI, loginUI]}"/>
 		</s:Transition>
 	</s:transitions>
-	
+
 	<!--LOGIN-->
 	<login:LoginUI id="loginUI" includeIn="not_logged"/>
-	
+
 	<!--Application-->
 	<s:Group id="appUI" width="100%" height="100%" includeIn="logged">
-		
+
 		<mx:ViewStack id="vs" x="0" y="0" width="100%" height="100%" paddingBottom="10"
 					  paddingLeft="10" paddingRight="10" paddingTop="50">
 			<usuarios:UsuariosUI id="usuarios" label="Usuários"/>
 		</mx:ViewStack>
-		
+
 		<s:Button id="btnLogout" x="10" y="10" label="logout" click="doLogout(event)"/>
-		
+
 		<s:ButtonBar dataProvider="{vs}" 
-					  x="85" y="10"/>
-		
+					 x="85" y="10"/>
+
 		<common:Notificacao id="notificacao" />
-		
-		<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
+
+		<s:Label text="Usuário logado: {usuario.usuario}" right="10" bottom="10"
 				 visible="{vs.selectedIndex > 0}" />
-		
+
 	</s:Group>
-	
+
 </s:Application>
 
