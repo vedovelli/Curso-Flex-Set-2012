@@ -45,8 +45,8 @@
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
 			
-			import events.NotificacaoEvent;
-			import events.UsuariosEvent;
+			import com.vedovelli.event.NotificacaoEvent;
+			import com.vedovelli.event.UsuariosEvent;
 			
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;

@@ -1,4 +1,4 @@
-package events
+package com.vedovelli.event
 {
 	import com.vedovelli.vo.UsuarioVO;
 	

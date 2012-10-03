@@ -8,7 +8,7 @@
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
 			
-			import events.UsuariosEvent;
+			import com.vedovelli.event.UsuariosEvent;
 			
 			override public function prepare(hasBeenRecycled:Boolean):void {
 				

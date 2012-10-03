@@ -29,8 +29,8 @@
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
 			
-			import events.LoginEvent;
-			import events.NotificacaoEvent;
+			import com.vedovelli.event.LoginEvent;
+			import com.vedovelli.event.NotificacaoEvent;
 			
 			import mx.events.FlexEvent;
 			
