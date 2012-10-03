@@ -6,7 +6,8 @@
 			   xmlns:vendas="com.vedovelli.view.vendas.*"
 			   xmlns:usuarios="com.vedovelli.view.usuarios.*" 
 			   xmlns:common="com.vedovelli.view.common.*"
-			   creationComplete="init(event)">
+			   creationComplete="init(event)"
+			   currentState="not_logged">
 	
 	<fx:Script>
 		<![CDATA[
@@ -28,8 +29,8 @@
 			
 			protected function login_ok(event:LoginEvent):void
 			{
-				vs.selectedIndex = 1;
 				_usuario = event.usuario;
+				this.currentState = 'logged';
 			}
 			
 			protected function gerenciar_notificacao(event:NotificacaoEvent):void
@@ -39,20 +40,47 @@
 				notificacao.componentVisible = true;
 			}
 			
+			protected function doLogout(event:MouseEvent):void
+			{
+				this.currentState = 'not_logged';
+			}
+			
 		]]>
-	</fx:Script>	
+	</fx:Script>
 	
-	<mx:ViewStack id="vs" width="100%" height="100%"
-				  paddingBottom="10" paddingLeft="10"
-				  paddingRight="10" paddingTop="10">
-		<login:LoginUI id="login"/>
-		<usuarios:UsuariosUI id="usuarios"/>
-	</mx:ViewStack>
+	<s:states>
+		<s:State name="not_logged"/>
+		<s:State name="logged"/>
+	</s:states>
 	
-	<common:Notificacao id="notificacao"/>
+	<s:transitions>
+		<s:Transition fromState="*" toState="*">
+			<s:CrossFade targets="{[appUI, loginUI]}"/>
+		</s:Transition>
+	</s:transitions>
 	
-	<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
-			 visible="{vs.selectedIndex > 0}"/>
+	<!--LOGIN-->
+	<login:LoginUI id="loginUI" includeIn="not_logged"/>
+	
+	<!--Application-->
+	<s:Group id="appUI" width="100%" height="100%" includeIn="logged">
+		
+		<mx:ViewStack id="vs" x="0" y="0" width="100%" height="100%" paddingBottom="10"
+					  paddingLeft="10" paddingRight="10" paddingTop="50">
+			<usuarios:UsuariosUI id="usuarios" label="Usuários"/>
+		</mx:ViewStack>
+		
+		<s:Button id="btnLogout" x="10" y="10" label="logout" click="doLogout(event)"/>
+		
+		<s:ButtonBar dataProvider="{vs}" 
+					  x="85" y="10"/>
+		
+		<common:Notificacao id="notificacao" />
+		
+		<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
+				 visible="{vs.selectedIndex > 0}" />
+		
+	</s:Group>
 	
 </s:Application>
 
