@@ -15,9 +15,7 @@
 			import events.LoginEvent;
 			import events.NotificacaoEvent;
 			
-			import mx.controls.Alert;
 			import mx.events.FlexEvent;
-			import mx.utils.ObjectUtil;
 			
 			[Bindable]
 			private var _usuario:UsuarioVO;
@@ -49,7 +47,6 @@
 				  paddingRight="10" paddingTop="10">
 		<login:LoginUI id="login"/>
 		<usuarios:UsuariosUI id="usuarios"/>
-		<vendas:VendasUI id="vendas"/>
 	</mx:ViewStack>
 	
 	<common:Notificacao id="notificacao"/>
