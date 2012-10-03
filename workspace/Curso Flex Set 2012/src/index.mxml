@@ -8,8 +8,7 @@
 			   xmlns:common="com.vedovelli.view.common.*"
 			   xmlns:swiz="http://swiz.swizframework.org"
 			   xmlns:config="com.vedovelli.config.*"
-			   creationComplete="init(event)"
-			   currentState="not_logged"  
+			   currentState="{pm.currentState}"  
 			   >
 
 	<fx:Declarations>
@@ -27,49 +26,20 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.vedovelli.vo.UsuarioVO;
+			import com.vedovelli.presentation.AppPresentationModel;
 
-			import com.vedovelli.event.LoginEvent;
-			import com.vedovelli.event.NotificacaoEvent;
-
-			import mx.events.FlexEvent;
-
-			private var _usuario:UsuarioVO;
+			private var _pm:AppPresentationModel;
 
 			[Bindable]
-			public function get usuario():UsuarioVO
+			public function get pm():AppPresentationModel
 			{
-				return _usuario;
+				return _pm;
 			}
 
-			[Inject(source="loginController.usuario", bind="true")]
-			public function set usuario(value:UsuarioVO):void
+			[Inject(source="appPM")]
+			public function set pm(value:AppPresentationModel):void
 			{
-				_usuario = value;
-			}
-
-			protected function init(event:FlexEvent):void
-			{
-				this.addEventListener(LoginEvent.LOGADO, login_ok);
-				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
-			}
-
-			protected function login_ok(event:LoginEvent):void
-			{
-				_usuario = event.usuario;
-				this.currentState = 'logged';
-			}
-
-			protected function gerenciar_notificacao(event:NotificacaoEvent):void
-			{
-				notificacao.headerText = event.headerText;
-				notificacao.bodyText = event.bodyText;
-				notificacao.componentVisible = true;
-			}
-
-			protected function doLogout(event:MouseEvent):void
-			{
-				this.currentState = 'not_logged';
+				_pm = value;
 			}
 
 		]]>
@@ -97,14 +67,14 @@
 			<usuarios:UsuariosUI id="usuarios" label="Usuários"/>
 		</mx:ViewStack>
 
-		<s:Button id="btnLogout" x="10" y="10" label="logout" click="doLogout(event)"/>
+		<s:Button id="btnLogout" x="10" y="10" label="logout" click="pm.doLogout()"/>
 
 		<s:ButtonBar dataProvider="{vs}" 
 					 x="85" y="10"/>
 
-		<common:Notificacao id="notificacao" />
+		<common:Notificacao />
 
-		<s:Label text="Usuário logado: {usuario.usuario}" right="10" bottom="10"
+		<s:Label text="Usuário logado: {pm.usuario.usuario}" right="10" bottom="10"
 				 visible="{vs.selectedIndex > 0}" />
 
 	</s:Group>
