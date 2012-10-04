@@ -22,7 +22,6 @@
 			{
 				var ev:UsuariosEvent = new UsuariosEvent(UsuariosEvent.REMOVER);
 				ev.usuario = data as UsuarioVO;
-
 				dispatchEvent(ev);
 			}
 

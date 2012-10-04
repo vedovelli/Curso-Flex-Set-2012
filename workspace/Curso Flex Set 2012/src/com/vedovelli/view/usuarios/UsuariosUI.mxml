@@ -5,55 +5,16 @@
 					width="100%" height="100%"
 					creationComplete="init(event)">
 
-	<fx:Declarations>
-		<s:RemoteObject id="ro" 
-						source="UsuarioController"
-						destination="zend"
-						endpoint="http://cf.local/php/gateway.php"
-						fault="onFault(event)"
-						showBusyCursor="true">
-
-			<s:method name="listar" 
-					  result="onlistarResult(event)">
-			</s:method>
-
-			<s:method name="criar" 
-					  result="ongravarResult(event)">
-				<s:arguments>
-					<usuario>{_usuario}</usuario>
-				</s:arguments>
-			</s:method>
-
-			<s:method name="atualizar" 
-					  result="onatualizarResult(event)">
-				<s:arguments>
-					<usuario>{_usuario}</usuario>
-				</s:arguments>
-			</s:method>
-
-			<s:method name="remover" 
-					  result="onremoverResult(event)">
-				<s:arguments>
-					<id>{_usuarioId}</id>
-				</s:arguments>
-			</s:method>
-
-		</s:RemoteObject>	
-	</fx:Declarations>
 
 	<fx:Script>
 		<![CDATA[
-			import com.vedovelli.event.NotificacaoEvent;
 			import com.vedovelli.event.UsuariosEvent;
-			import com.vedovelli.vo.NotificacaoVO;
 			import com.vedovelli.vo.UsuarioVO;
 
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
-			import mx.rpc.events.FaultEvent;
-			import mx.rpc.events.ResultEvent;
 
 			[Bindable]
 			private var _usuarioId:int;
@@ -91,15 +52,6 @@
 
 			}
 
-			protected function onlistarResult(event:ResultEvent):void
-			{
-				_lista = new ArrayCollection(event.result as Array);
-			}
-
-			protected function onFault(event:FaultEvent):void
-			{
-				Alert.show('Falha');
-			}
 
 			protected function listaUsuarios_valueCommitHandler(event:FlexEvent):void
 			{
@@ -124,61 +76,11 @@
 				_usuario.nivel = listaNiveis.selectedItem.data;
 			}
 
-			protected function ongravarResult(event:ResultEvent):void
-			{
-				_lista.addItemAt(event.result, 0);
-				limpar();
-
-				var notificacao:NotificacaoVO = new NotificacaoVO();
-				notificacao.body = 'Usuário';
-				notificacao.header = 'Usuário criado com sucesso!';
-
-				var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
-				ev.notificacao = notificacao;
-
-				this.dispatchEvent(ev);
-
-			}
 
 			protected function listaNiveis_valueCommitHandler(event:FlexEvent):void
 			{
 				if(_usuario != null){
 					_usuario.nivel = listaNiveis.selectedItem.data;
-				}
-			}
-
-			protected function onatualizarResult(event:ResultEvent):void
-			{
-				if(event.result is UsuarioVO){
-					var index:int = listaUsuarios.selectedIndex;
-					_lista.setItemAt(event.result, index);
-					limpar();
-
-					var notificacao:NotificacaoVO = new NotificacaoVO();
-					notificacao.body = 'Usuário';
-					notificacao.header = 'Usuário atualizado com sucesso!';
-
-					var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
-					ev.notificacao = notificacao;
-
-					this.dispatchEvent(ev);
-				}
-			}
-
-			protected function onremoverResult(event:ResultEvent):void
-			{
-				if(event.result){
-					_lista.removeItemAt(listaUsuarios.selectedIndex);
-					limpar();
-
-					var notificacao:NotificacaoVO = new NotificacaoVO();
-					notificacao.body = 'Usuário';
-					notificacao.header = 'Usuário removido com sucesso!';
-
-					var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
-					ev.notificacao = notificacao;
-
-					this.dispatchEvent(ev);
 				}
 			}
 
