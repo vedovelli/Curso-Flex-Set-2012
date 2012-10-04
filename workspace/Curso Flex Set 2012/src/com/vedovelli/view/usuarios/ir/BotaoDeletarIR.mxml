@@ -21,7 +21,7 @@
 			protected function excluir_usuario(event:MouseEvent):void
 			{
 				var ev:UsuariosEvent = new UsuariosEvent(UsuariosEvent.REMOVER);
-				ev.usuario = data as UsuarioVO;
+				ev.id = data.id;
 				dispatchEvent(ev);
 			}
 

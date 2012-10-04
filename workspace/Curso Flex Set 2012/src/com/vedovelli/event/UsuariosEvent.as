@@ -12,6 +12,7 @@ package com.vedovelli.event
 		public static const REMOVER:String = "UsuariosEvent_REMOVER";
 
 		public var usuario:UsuarioVO;
+		public var id:int;
 
 		public function UsuariosEvent(type:String, bubbles:Boolean=true, cancelable:Boolean=false)
 		{
