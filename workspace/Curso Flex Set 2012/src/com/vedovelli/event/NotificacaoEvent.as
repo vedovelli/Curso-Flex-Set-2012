@@ -6,6 +6,7 @@ package com.vedovelli.event
 
 	public class NotificacaoEvent extends Event
 	{
+		public static const RESET:String = "NotificacaoEvent_RESET";
 		public static const MOSTRAR:String = "NotificacaoEvent_MOSTRAR";
 
 		public var notificacao:NotificacaoVO;

@@ -8,11 +8,13 @@ package com.vedovelli.controller
 		public var notificacao:NotificacaoVO;
 		public var currentState:String;
 
+		[EventHandler(event="NotificacaoEvent.RESET", properties="notificacao")]
 		[EventHandler(event="NotificacaoEvent.MOSTRAR", properties="notificacao")]
-		public function gerenciar_notificacao(n:NotificacaoVO):void
+		public function gerenciar_notificacao(notif:NotificacaoVO):void
 		{
-			notificacao = n;
+			notificacao = notif;
 		}
+
 	}
 }
 

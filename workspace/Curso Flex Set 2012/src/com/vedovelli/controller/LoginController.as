@@ -1,6 +1,5 @@
 package com.vedovelli.controller
 {
-	import com.vedovelli.event.LoginEvent;
 	import com.vedovelli.vo.UsuarioVO;
 
 	import mx.rpc.events.ResultEvent;
@@ -13,10 +12,10 @@ package com.vedovelli.controller
 		public var feedbackText:String;
 
 		[EventHandler(event="LoginEvent.LOGIN", properties="usuario")]
-		public function fazerLogin(usuario:UsuarioVO):void
+		public function fazerLogin(u:UsuarioVO):void
 		{
 			ro.source = 'AcessoController';
-			sh.executeServiceCall(ro.login(usuario), loginResult);
+			sh.executeServiceCall(ro.login(u), loginResult);
 		}
 
 		private function loginResult(event:ResultEvent):void
@@ -27,10 +26,6 @@ package com.vedovelli.controller
 				feedbackVisible = true;
 				feedbackText = event.result.retorno;
 			}
-		}
-
-		function LoginController(){
-//			usuario = new UsuarioVO();
 		}
 	}
 }

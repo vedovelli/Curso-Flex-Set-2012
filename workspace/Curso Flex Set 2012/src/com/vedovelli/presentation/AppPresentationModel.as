@@ -42,13 +42,18 @@ package com.vedovelli.presentation
 		[Inject(source="loginController.usuario", bind="true")]
 		public function set usuario(value:UsuarioVO):void
 		{
-			usuario = value;
+			_usuario = value;
 			currentState = 'logged';
 		}
 
 		public function doLogout():void
 		{
 			currentState = 'not_logged';
+
+			var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.RESET);
+			ev.notificacao = new NotificacaoVO();
+			dispatcher.dispatchEvent(ev);
+
 		}
 	}
 }

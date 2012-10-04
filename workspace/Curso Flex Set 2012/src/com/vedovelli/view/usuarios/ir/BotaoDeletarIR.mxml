@@ -3,34 +3,38 @@
 					xmlns:s="library://ns.adobe.com/flex/spark" 
 					xmlns:mx="library://ns.adobe.com/flex/mx" 
 					clipAndEnableScrolling="true">
-	
+
 	<fx:Script>
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
-			
+
 			import com.vedovelli.event.UsuariosEvent;
-			
+
 			override public function prepare(hasBeenRecycled:Boolean):void {
-				
+				if(btn != null && data != null && data.usuario == 'vedovelli'){
+					btn.enabled = false;
+				} else {
+					btn.enabled = true;
+				}
 			}
-			
+
 			protected function excluir_usuario(event:MouseEvent):void
 			{
 				var ev:UsuariosEvent = new UsuariosEvent(UsuariosEvent.REMOVER);
-					ev.usuario = data as UsuarioVO;
-				
-					dispatchEvent(ev);
+				ev.usuario = data as UsuarioVO;
+
+				dispatchEvent(ev);
 			}
-			
+
 		]]>
 	</fx:Script>
-	
+
 	<s:layout>
 		<s:VerticalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
 						  horizontalAlign="left" verticalAlign="top"/>
-		
+
 	</s:layout>
-	
-	<s:Button label="Excluir" click="excluir_usuario(event)"/>
-	
+
+	<s:Button id="btn" label="Excluir" click="excluir_usuario(event)"/>
+
 </s:GridItemRenderer>

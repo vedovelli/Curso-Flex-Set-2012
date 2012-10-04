@@ -2,11 +2,18 @@
 
 require_once 'config.php';
 
-$controller = new UsuarioController();
+$hasher = new PasswordHash(8, false);
 
-$usuario = new UsuarioVO();
-$usuario->usuario = 'carlos';
-$usuario->senha = '123';
-$usuario->nivel = 'administrador';
+# Transforma a senha recebida em String em Hash
+$senha = $hasher->HashPassword('123');
 
-print_r($controller->criar($usuario));
+echo $senha;
+
+// $controller = new UsuarioController();
+
+// $usuario = new UsuarioVO();
+// $usuario->usuario = 'carlos';
+// $usuario->senha = '123';
+// $usuario->nivel = 'administrador';
+
+// print_r($controller->criar($usuario));

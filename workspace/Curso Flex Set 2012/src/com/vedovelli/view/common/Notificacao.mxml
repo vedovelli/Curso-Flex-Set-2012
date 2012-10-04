@@ -3,7 +3,7 @@
 					  xmlns:fx="http://ns.adobe.com/mxml/2009" 
 					  xmlns:s="library://ns.adobe.com/flex/spark" 
 					  xmlns:mx="library://ns.adobe.com/flex/mx" 
-					  width="400"
+					  width="400" visible="false"
 					  top="10" right="10"
 					  skinClass="com.vedovelli.view.common.skin.NotificacaoSkin">
 
@@ -27,7 +27,7 @@
 			public function set notificacao(value:NotificacaoVO):void
 			{
 				_notificacao = value;
-				if(value){
+				if(value && value.body != null){
 					aparecer.play();
 					_timer = new Timer(1000, TIME);
 					_timer.addEventListener(TimerEvent.TIMER, manageTimer);
