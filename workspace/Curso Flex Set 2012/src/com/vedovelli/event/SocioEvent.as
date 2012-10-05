@@ -6,8 +6,9 @@ package com.vedovelli.event
 
 	public class SocioEvent extends Event
 	{
-		public static const CRIAR:String = "SocioEvent_CRIAR";
-		public static const ATUALIZAR:String = "SocioEvent_ATUALIZAR";
+		public static const ADICIONADO:String = "SocioEvent_ADICIONADO";
+		public static const REMOVIDO:String = "SocioEvent_REMOVIDO";
+		public static const JANELA:String = "SocioEvent_JANELA";
 		public static const REMOVER:String = "SocioEvent_REMOVER";
 
 		public var socio:SocioVO;

@@ -14,8 +14,16 @@ package com.vedovelli.controller
 		public var empresa:EmpresaVO;
 		public var remover_registro:Boolean;
 		public var limpar:Boolean;
+		public var janela:Boolean;
 
 		private var _empresaId:int;
+
+		[EventHandler(event="SocioEvent.ADICIONADO")]
+		[EventHandler(event="SocioEvent.REMOVIDO")]
+		public function atualizar_lista():void
+		{
+			trace(lista.refresh());
+		}
 
 		[EventHandler(event="EmpresaEvent.LISTAR")]
 		public function listar():void
@@ -73,8 +81,10 @@ package com.vedovelli.controller
 
 		private function fazer_remocao(event:CloseEvent):void
 		{
-			ro.source = 'EmpresaController';
-			sh.executeServiceCall(ro.remover(_empresaId), removerResult);
+			if(event.detail == Alert.YES){
+				ro.source = 'EmpresaController';
+				sh.executeServiceCall(ro.remover(_empresaId), removerResult);
+			}
 		}
 
 		private function removerResult(event:ResultEvent):void
@@ -83,6 +93,12 @@ package com.vedovelli.controller
 				notificar('Empresa', 'Empresa removido com sucesso!');
 				remover_registro = !remover_registro;
 			}
+		}
+
+		[EventHandler(event="SocioEvent.JANELA")]
+		public function abrirjanela():void
+		{
+			janela = !janela;
 		}
 
 		function EmpresasController():void{

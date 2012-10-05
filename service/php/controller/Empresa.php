@@ -112,6 +112,14 @@ class EmpresaController{
 		try{
 			# Busca o usuário num model utilizando o ID passado
 			$model = Empresa::find($id);
+			
+			$socios_controller = new SocioController();
+			$socios = $socios_controller->listar($model->id);
+			foreach ($socios as $key => $value) {
+				$socio = Socio::find($value->id);
+				$socio->delete();
+			}
+
 			# Retorna true ou false, conforme a situação
 			return $model->delete();
 		} catch (Exception $e) {

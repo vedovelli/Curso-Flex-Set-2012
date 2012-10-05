@@ -29,6 +29,19 @@ package com.vedovelli.presentation
 		private var _datagrid:DataGrid;
 		private var _cbNiveis:DropDownList;
 		private var _janelaSocios:SociosUI;
+		private var _janela:Boolean;
+
+		public function get janela():Boolean
+		{
+			return _janela;
+		}
+
+		[Inject(source="empresaController.janela", bind="true")]
+		public function set janela(value:Boolean):void
+		{
+			_janela = value;
+			abrirGerenciamentoSocios();
+		}
 
 		public function get datagrid():DataGrid
 		{

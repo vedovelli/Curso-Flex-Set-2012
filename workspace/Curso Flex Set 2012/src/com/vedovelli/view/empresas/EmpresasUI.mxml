@@ -43,6 +43,8 @@
 				<s:GridColumn labelFunction="{pm.quantidadeSocios}" headerText="Sócios"></s:GridColumn>
 				<s:GridColumn headerText="Deletar" width="85" 
 							  itemRenderer="com.vedovelli.view.empresas.ir.BotaoDeletarIR"></s:GridColumn>
+				<s:GridColumn headerText="Sócios" width="85" 
+							  itemRenderer="com.vedovelli.view.empresas.ir.BotaoSociosIR"></s:GridColumn>
 			</s:ArrayList>
 		</s:columns>
 
@@ -61,11 +63,6 @@
 		</s:FormItem>
 		<s:FormItem label="Endereço">
 			<s:TextInput text="@{pm.empresa.endereco}"/>
-		</s:FormItem>
-		<s:FormItem label="Sócios">
-			<s:Button id="btnSocios" label="Gerenciar Sócios" 
-					  enabled="{lista.selectedIndex > -1}"
-					  click="pm.abrirGerenciamentoSocios()"/>
 		</s:FormItem>
 		<s:FormItem>
 			<s:HGroup>

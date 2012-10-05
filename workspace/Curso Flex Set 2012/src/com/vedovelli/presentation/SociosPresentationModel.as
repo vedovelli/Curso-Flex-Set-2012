@@ -1,5 +1,7 @@
 package com.vedovelli.presentation
 {
+	import com.vedovelli.event.EmpresaEvent;
+	import com.vedovelli.event.SocioEvent;
 	import com.vedovelli.view.socios.SociosUI;
 	import com.vedovelli.vo.EmpresaVO;
 	import com.vedovelli.vo.SocioVO;
@@ -31,7 +33,12 @@ package com.vedovelli.presentation
 		public function set remover(value:Boolean):void
 		{
 			_remover = value;
-			lista.removeItemAt(datagrid.selectedIndex);
+			if(datagrid!=null){
+				lista.removeItemAt(datagrid.selectedIndex);
+			}
+			if(dispatcher!= null){
+				dispatcher.dispatchEvent(new SocioEvent(SocioEvent.REMOVIDO));
+			}
 			resetar();
 		}
 
@@ -82,6 +89,9 @@ package com.vedovelli.presentation
 
 		public function closeHandler(event:CloseEvent):void
 		{
+			var ev:EmpresaEvent = new EmpresaEvent(EmpresaEvent.ATUALIZAR);
+			ev.empresa = empresa;
+			dispatcher.dispatchEvent(ev);
 			PopUpManager.removePopUp(event.currentTarget as SociosUI);
 		}
 
@@ -97,6 +107,7 @@ package com.vedovelli.presentation
 				lista.setItemAt(socio, datagrid.selectedIndex);
 			} else {
 				lista.addItemAt(socio, 0);
+				dispatcher.dispatchEvent(new SocioEvent(SocioEvent.ADICIONADO));
 			}
 			resetar();
 		}

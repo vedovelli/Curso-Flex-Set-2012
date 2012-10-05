@@ -7,6 +7,7 @@ package com.vedovelli.controller
 	{
 		public var empresa:EmpresaVO;
 		public var remover:Boolean;
+		public var janela:Boolean;
 
 		[EventHandler(event="EmpresaEvent.EMPRESA_SELECIONADA", properties="empresa")]
 		public function empresaSelecionada(emp:EmpresaVO):void
@@ -17,9 +18,8 @@ package com.vedovelli.controller
 		[EventHandler(event="SocioEvent.REMOVER")]
 		public function fazerRemocao():void
 		{
-			remover != remover;
+			remover = !remover;
 		}
-
 	}
 }
 
