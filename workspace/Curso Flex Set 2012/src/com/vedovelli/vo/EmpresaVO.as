@@ -5,7 +5,11 @@ package com.vedovelli.vo
 	public class EmpresaVO
 	{
 		public var id:int;
-		public var empresa:String;
+		public var razao_social:String;
+		public var nome_fantasia:String;
+		public var cnpj:String;
+		public var endereco:String;
+		public var socios:Array = new Array();
 	}
 }
 

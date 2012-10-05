@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:TitleWindow xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+			   title="Gerenciamento de Sócios"
+			   close="pm.closeHandler(event)">
+
+	<fx:Script>
+		<![CDATA[
+			import com.vedovelli.presentation.SociosPresentationModel;
+
+			private var _pm:SociosPresentationModel;
+
+			[Bindable]
+			public function get pm():SociosPresentationModel
+			{
+				return _pm;
+			}
+
+			[Inject(source="sociosPM")]
+			public function set pm(value:SociosPresentationModel):void
+			{
+				_pm = value;
+			}
+
+		]]>
+	</fx:Script>
+
+</s:TitleWindow>

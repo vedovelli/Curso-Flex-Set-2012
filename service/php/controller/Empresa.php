@@ -51,15 +51,14 @@ class EmpresaController{
 			$empresa->id = $model->id;
 			
 			# Criacao dos socios
+			$socios_controller = new SocioController();
 			if(count($empresa->socios)>0){
 				# Controller de socios para salvar os socios recebidos
-				$socios_controller = new SocioController();
 				foreach ($empresa->socios as $socio) {
 					$socio->empresa_id = $empresa->id;
 					$socios_controller->criar($socio);
 				}
 			}
-
 			$empresa->socios = $socios_controller->listar($model->id);
 
 			#retorna a empresa
@@ -84,11 +83,11 @@ class EmpresaController{
 			# Salva o model, que receberá na propriedade ID o que foi criado pelo DB
 			$model->save();
 
+			# Controller de socios para salvar os socios recebidos
+			$socios_controller = new SocioController();
+
 			# Criacao dos socios
 			if(count($empresa->socios)>0){
-
-				# Controller de socios para salvar os socios recebidos
-				$socios_controller = new SocioController();
 
 				foreach ($empresa->socios as $socio) {
 					$socio->empresa_id = $empresa->id;

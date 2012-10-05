@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					width="100%" height="100%"
+					creationComplete="pm.init()">
+
+
+	<fx:Script>
+		<![CDATA[
+			import com.vedovelli.presentation.EmpresasPresentationModel;
+
+			private var _pm:EmpresasPresentationModel;
+
+			[Bindable]
+			public function get pm():EmpresasPresentationModel
+			{
+				return _pm;
+			}
+
+			[Inject(source="empresasPM")]
+			public function set pm(value:EmpresasPresentationModel):void
+			{
+				_pm = value;
+			}
+
+		]]>
+	</fx:Script>
+
+	<s:layout>
+		<s:HorizontalLayout/>
+	</s:layout>
+
+	<s:DataGrid id="lista" dataProvider="{pm.lista}" 
+				width="100%" height="100%" 
+				valueCommit="pm.listaEmpresas_valueCommitHandler(event)">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="id" headerText="ID" width="50"></s:GridColumn>
+				<s:GridColumn dataField="razao_social" headerText="Razão Social"></s:GridColumn>
+				<s:GridColumn dataField="nome_fantasia" headerText="Nome Fantasia"></s:GridColumn>
+				<s:GridColumn dataField="cnpj" headerText="CNPJ"></s:GridColumn>
+				<s:GridColumn labelFunction="{pm.quantidadeSocios}" headerText="Sócios"></s:GridColumn>
+				<s:GridColumn headerText="Deletar" width="85" 
+							  itemRenderer="com.vedovelli.view.empresas.ir.BotaoDeletarIR"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+
+	</s:DataGrid>
+
+	<s:Form width="100%" height="100%">
+		<s:FormHeading label="Gerenciamento de Empresas"/>
+		<s:FormItem label="Razão Social">
+			<s:TextInput text="@{pm.empresa.razao_social}"/>
+		</s:FormItem>
+		<s:FormItem label="Nome Fantasia">
+			<s:TextInput text="@{pm.empresa.nome_fantasia}"/>
+		</s:FormItem>
+		<s:FormItem label="CNPJ">
+			<s:TextInput text="@{pm.empresa.cnpj}"/>
+		</s:FormItem>
+		<s:FormItem label="Endereço">
+			<s:TextInput text="@{pm.empresa.endereco}"/>
+		</s:FormItem>
+		<s:FormItem label="Sócios">
+			<s:Button id="btnSocios" label="Gerenciar Sócios" 
+					  enabled="{lista.selectedIndex > -1}"
+					  click="pm.abrirGerenciamentoSocios()"/>
+		</s:FormItem>
+		<s:FormItem>
+			<s:HGroup>
+				<s:Button id="btnSalvar" label="Salvar" click="pm.btnSalvar_clickHandler(event)"/>
+				<s:Button id="btnLimpar" enabled="{lista.selectedIndex > -1}" 
+						  label="Limpar" click="pm.resetar()"/>
+			</s:HGroup>
+		</s:FormItem>
+	</s:Form>
+
+</s:NavigatorContent>

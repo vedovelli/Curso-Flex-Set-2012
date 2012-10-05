@@ -17,7 +17,7 @@ package com.vedovelli.controller
 
 		private var _empresaId:int;
 
-		[EventHandler(event="EmpresasEvent.LISTAR")]
+		[EventHandler(event="EmpresaEvent.LISTAR")]
 		public function listar():void
 		{
 			ro.source = 'EmpresaController';
@@ -29,7 +29,7 @@ package com.vedovelli.controller
 			lista = new ArrayCollection(event.result as Array);
 		}
 
-		[EventHandler(event="EmpresasEvent.CRIAR", properties="empresa")]
+		[EventHandler(event="EmpresaEvent.CRIAR", properties="empresa")]
 		public function criar(emp:EmpresaVO):void
 		{
 			ro.source = 'EmpresaController';
@@ -43,7 +43,7 @@ package com.vedovelli.controller
 			limpar = !limpar;
 		}
 
-		[EventHandler(event="EmpresasEvent.ATUALIZAR", properties="empresa")]
+		[EventHandler(event="EmpresaEvent.ATUALIZAR", properties="empresa")]
 		public function atualizar(emp:EmpresaVO):void
 		{
 			ro.source = 'EmpresaController';
@@ -58,12 +58,12 @@ package com.vedovelli.controller
 			}
 		}
 
-		[EventHandler(event="EmpresasEvent.REMOVER", properties="id")]
+		[EventHandler(event="EmpresaEvent.REMOVER", properties="id")]
 		public function remover(id:int):void
 		{
 			_empresaId = id;
 			Alert.show(
-				'Tem certeza que deseja excluir '+ empresa.empresa + '?', 
+				'Tem certeza que deseja excluir '+ empresa.razao_social + '?', 
 				'ATENÇÃO', 
 				Alert.YES|Alert.NO, 
 				null, 

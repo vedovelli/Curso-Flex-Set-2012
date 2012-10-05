@@ -2,12 +2,16 @@
 <swiz:BeanProvider xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   xmlns:mx="library://ns.adobe.com/flex/mx"
-				   xmlns:swiz="http://swiz.swizframework.org" xmlns:controller="com.vedovelli.controller.*" xmlns:presentation="com.vedovelli.presentation.*">
+				   xmlns:swiz="http://swiz.swizframework.org" 
+				   xmlns:controller="com.vedovelli.controller.*" 
+				   xmlns:presentation="com.vedovelli.presentation.*">
 	<fx:Script>
 		<![CDATA[
 			import com.vedovelli.presentation.AppPresentationModel;
 			import com.vedovelli.presentation.BasePresentationModel;
+			import com.vedovelli.presentation.EmpresasPresentationModel;
 			import com.vedovelli.presentation.LoginPresentationModel;
+			import com.vedovelli.presentation.SociosPresentationModel;
 			import com.vedovelli.presentation.UsuariosPresentationModel;
 
 			import mx.controls.Alert;
@@ -28,12 +32,16 @@
 		<swiz:Prototype id="usuariosPM" type="{UsuariosPresentationModel}"/>
 		<swiz:Prototype id="appPM" type="{AppPresentationModel}"/>
 		<swiz:Prototype id="loginPM" type="{LoginPresentationModel}"/>
+		<swiz:Prototype id="empresasPM" type="{EmpresasPresentationModel}"/>
+		<swiz:Prototype id="sociosPM" type="{SociosPresentationModel}"/>
 
 		<!--Controller-->
 		<controller:BaseController id="baseController"/>
 		<controller:LoginController id="loginController"/>
 		<controller:UsuariosController id="usuariosController"/>
 		<controller:AppController id="appController"/>
+		<controller:EmpresasController id="empresaController"/>
+		<controller:SociosController id="socioController"/>
 
 		<!--Service-->
 		<s:RemoteObject id="ro" 

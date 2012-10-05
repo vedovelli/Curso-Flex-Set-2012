@@ -1,9 +1,16 @@
 package com.vedovelli.presentation
 {
+	import com.vedovelli.view.socios.SociosUI;
+
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
-	
+
+	import mx.core.FlexGlobals;
+	import mx.managers.PopUpManager;
+
 	import spark.components.DataGrid;
 	import spark.components.DropDownList;
+	import spark.components.gridClasses.GridColumn;
 
 	[Bindable]
 	public class EmpresasPresentationModel extends BasePresentationModel
@@ -21,6 +28,7 @@ package com.vedovelli.presentation
 		private var _limpar:Boolean;
 		private var _datagrid:DataGrid;
 		private var _cbNiveis:DropDownList;
+		private var _janelaSocios:SociosUI;
 
 		public function get datagrid():DataGrid
 		{
@@ -37,7 +45,7 @@ package com.vedovelli.presentation
 			return _remover_registro;
 		}
 
-		[Inject(source="empresasController.remover_registro", bind="true")]
+		[Inject(source="empresaController.remover_registro", bind="true")]
 		public function set remover_registro(value:Boolean):void
 		{
 			_remover_registro = value;
@@ -52,7 +60,7 @@ package com.vedovelli.presentation
 			return _limpar;
 		}
 
-		[Inject(source="empresasController.limpar", bind="true")]
+		[Inject(source="empresaController.limpar", bind="true")]
 		public function set limpar(value:Boolean):void
 		{
 			_limpar = value;
@@ -64,7 +72,7 @@ package com.vedovelli.presentation
 			return _empresa;
 		}
 
-		[Inject(source="empresasController.empresa", bind="true")]
+		[Inject(source="empresaController.empresa", bind="true")]
 		public function set empresa(value:EmpresaVO):void
 		{
 			_empresa = value;
@@ -75,7 +83,7 @@ package com.vedovelli.presentation
 			return _lista;
 		}
 
-		[Inject(source="empresasController.lista", bind="true")]
+		[Inject(source="empresaController.lista", bind="true")]
 		public function set lista(value:ArrayCollection):void
 		{
 			_lista = value;
@@ -121,5 +129,20 @@ package com.vedovelli.presentation
 			}
 			empresa = new EmpresaVO();
 		}
+
+		public function quantidadeSocios(data:Object, col:GridColumn):String
+		{
+			return data.socios.length.toString();
+		}
+
+		public function abrirGerenciamentoSocios():void
+		{
+			_janelaSocios = PopUpManager.createPopUp(FlexGlobals.topLevelApplication as DisplayObject, SociosUI, true) as SociosUI;
+			_janelaSocios.width = 800;
+			_janelaSocios.height = 400;
+			PopUpManager.centerPopUp(_janelaSocios);
+		}
 	}
 }
+
+
