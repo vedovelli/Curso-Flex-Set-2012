@@ -26,4 +26,48 @@
 		]]>
 	</fx:Script>
 
+	<s:layout>
+		<s:HorizontalLayout paddingTop="5" paddingBottom="5" paddingLeft="5" paddingRight="5" gap="5" 
+							horizontalAlign="left" verticalAlign="top"/>
+
+	</s:layout>
+
+	<s:DataGrid id="lista" dataProvider="{pm.lista}" 
+				width="100%" height="100%" 
+				valueCommit="pm.listaSocios_valueCommitHandler(event)">
+		<s:columns>
+			<s:ArrayList>
+				<s:GridColumn dataField="id" headerText="ID" width="50"></s:GridColumn>
+				<s:GridColumn dataField="nome" headerText="Nome"></s:GridColumn>
+				<s:GridColumn dataField="cpf" headerText="CPF"></s:GridColumn>
+				<s:GridColumn headerText="Deletar" width="85" 
+							  itemRenderer="com.vedovelli.view.socios.ir.BotaoDeletarIR"></s:GridColumn>
+			</s:ArrayList>
+		</s:columns>
+
+	</s:DataGrid>
+
+	<s:Form width="100%" height="100%">
+		<s:FormHeading label="Gerenciamento de Sócios"/>
+		<s:FormItem label="Nome">
+			<s:TextInput text="@{pm.socio.nome}"/>
+		</s:FormItem>
+		<s:FormItem label="CPF">
+			<s:TextInput text="@{pm.socio.cpf}"/>
+		</s:FormItem>
+		<s:FormItem label="Endereço">
+			<s:TextInput text="@{pm.socio.endereco}"/>
+		</s:FormItem>
+		<s:FormItem label="Telefones">
+			<s:TextInput text="@{pm.socio.telefones}"/>
+		</s:FormItem>
+		<s:FormItem>
+			<s:HGroup>
+				<s:Button id="btnSalvar" label="Salvar" click="pm.btnSalvar_clickHandler(event)"/>
+				<s:Button id="btnLimpar" enabled="{lista.selectedIndex > -1}" 
+						  label="Limpar" click="pm.resetar()"/>
+			</s:HGroup>
+		</s:FormItem>
+	</s:Form>
+
 </s:TitleWindow>
