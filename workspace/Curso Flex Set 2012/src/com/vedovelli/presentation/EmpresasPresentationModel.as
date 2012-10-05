@@ -108,6 +108,9 @@ package com.vedovelli.presentation
 		{
 			datagrid= DataGrid(event.currentTarget);
 			empresa = datagrid.selectedItem as EmpresaVO;
+			var ev:EmpresaEvent = new EmpresaEvent(EmpresaEvent.EMPRESA_SELECIONADA);
+			ev.empresa = empresa;
+			dispatcher.dispatchEvent(ev);
 		}
 
 		public function btnSalvar_clickHandler(event:MouseEvent):void

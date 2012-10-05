@@ -6,6 +6,10 @@
 
 	<fx:Script>
 		<![CDATA[
+
+			[Dispatcher]
+			public var dispatcher:IEventDispatcher;
+
 			import com.vedovelli.event.SocioEvent;
 
 			override public function prepare(hasBeenRecycled:Boolean):void {
@@ -15,8 +19,7 @@
 			protected function excluir(event:MouseEvent):void
 			{
 				var ev:SocioEvent = new SocioEvent(SocioEvent.REMOVER);
-				ev.id = data.id;
-				dispatchEvent(ev);
+				dispatcher.dispatchEvent(ev);
 			}
 
 		]]>

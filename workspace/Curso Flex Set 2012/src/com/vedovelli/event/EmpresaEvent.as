@@ -1,11 +1,12 @@
 package com.vedovelli.event
 {
 	import com.vedovelli.vo.EmpresaVO;
-	
+
 	import flash.events.Event;
 
 	public class EmpresaEvent extends Event
 	{
+		public static const EMPRESA_SELECIONADA:String = "EmpresaEvent_EMPRESA_SELECIONADA";
 		public static const LISTAR:String = "EmpresaEvent_LISTAR";
 		public static const CRIAR:String = "EmpresaEvent_CRIAR";
 		public static const ATUALIZAR:String = "EmpresaEvent_ATUALIZAR";

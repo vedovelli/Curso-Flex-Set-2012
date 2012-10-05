@@ -1,33 +1,39 @@
 package com.vedovelli.presentation
 {
 	import com.vedovelli.view.socios.SociosUI;
+	import com.vedovelli.vo.EmpresaVO;
+	import com.vedovelli.vo.SocioVO;
 
-	import flash.display.DisplayObject;
-	import flash.events.MouseEvent;
+	import flash.events.Event;
 
-	import mx.core.FlexGlobals;
+	import mx.collections.ArrayCollection;
 	import mx.events.CloseEvent;
 	import mx.managers.PopUpManager;
 
 	import spark.components.DataGrid;
-	import spark.components.DropDownList;
-	import spark.components.gridClasses.GridColumn;
 
 	[Bindable]
 	public class SociosPresentationModel extends BasePresentationModel
 	{
-		import com.vedovelli.event.SocioEvent;
-		import com.vedovelli.vo.SocioVO;
 
-		import mx.collections.ArrayCollection;
-		import mx.events.FlexEvent;
-
-		private var _socioId:int;
+		private var _empresa:EmpresaVO;
 		private var _lista:ArrayCollection;
 		private var _socio:SocioVO;
-		private var _remover_registro:Boolean;
-		private var _limpar:Boolean;
 		private var _datagrid:DataGrid;
+		private var _remover:Boolean;
+
+		public function get remover():Boolean
+		{
+			return _remover;
+		}
+
+		[Inject(source="socioController.remover", bind="true")]
+		public function set remover(value:Boolean):void
+		{
+			_remover = value;
+			lista.removeItemAt(datagrid.selectedIndex);
+			resetar();
+		}
 
 		public function get datagrid():DataGrid
 		{
@@ -39,39 +45,11 @@ package com.vedovelli.presentation
 			_datagrid = value;
 		}
 
-		public function get remover_registro():Boolean
-		{
-			return _remover_registro;
-		}
-
-		[Inject(source="socioController.remover_registro", bind="true")]
-		public function set remover_registro(value:Boolean):void
-		{
-			_remover_registro = value;
-			if(datagrid != null){
-				lista.removeItemAt(datagrid.selectedIndex);
-				resetar();
-			}
-		}
-
-		public function get limpar():Boolean
-		{
-			return _limpar;
-		}
-
-		[Inject(source="socioController.limpar", bind="true")]
-		public function set limpar(value:Boolean):void
-		{
-			_limpar = value;
-			resetar();
-		}
-
 		public function get socio():SocioVO
 		{
 			return _socio;
 		}
 
-		[Inject(source="socioController.socio", bind="true")]
 		public function set socio(value:SocioVO):void
 		{
 			_socio = value;
@@ -82,43 +60,45 @@ package com.vedovelli.presentation
 			return _lista;
 		}
 
-		[Inject(source="socioController.lista", bind="true")]
 		public function set lista(value:ArrayCollection):void
 		{
 			_lista = value;
 		}
 
-		public function get socioId():int
+		public function get empresa():EmpresaVO
 		{
-			return _socioId;
+			return _empresa;
 		}
 
-		public function set socioId(value:int):void
+		[Inject(source="socioController.empresa", bind="true")]
+		public function set empresa(value:EmpresaVO):void
 		{
-			_socioId = value;
+			if(value != null){
+				_empresa = value;
+				lista = new ArrayCollection(empresa.socios);
+				socio = new SocioVO();
+			}
 		}
 
-		public function init():void
+		public function closeHandler(event:CloseEvent):void
 		{
-			dispatcher.dispatchEvent(new SocioEvent(SocioEvent.LISTAR));
+			PopUpManager.removePopUp(event.currentTarget as SociosUI);
 		}
 
-		public function listaSocios_valueCommitHandler(event:FlexEvent):void
+		public function listaSocios_valueCommitHandler(event:Event):void
 		{
-			datagrid= DataGrid(event.currentTarget);
+			datagrid = event.currentTarget as DataGrid;
 			socio = datagrid.selectedItem as SocioVO;
 		}
 
-		public function btnSalvar_clickHandler(event:MouseEvent):void
+		public function btnSalvar_clickHandler(event:Event):void
 		{
-			var ev:SocioEvent;
-			if(_socio.id && _socio.id > 0){
-				ev = new SocioEvent(SocioEvent.ATUALIZAR);
+			if(socio.id > 0){
+				lista.setItemAt(socio, datagrid.selectedIndex);
 			} else {
-				ev = new SocioEvent(SocioEvent.CRIAR);
+				lista.addItemAt(socio, 0);
 			}
-			ev.socio = socio;
-			dispatcher.dispatchEvent(ev);
+			resetar();
 		}
 
 		public function resetar():void
@@ -127,11 +107,6 @@ package com.vedovelli.presentation
 				datagrid.selectedIndex = -1;
 			}
 			socio = new SocioVO();
-		}
-
-		public function closeHandler(event:CloseEvent):void
-		{
-			PopUpManager.removePopUp(event.currentTarget as SociosUI);
 		}
 	}
 }
