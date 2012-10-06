@@ -38,15 +38,14 @@
 				</s:arguments>
 			</s:method>
 
-		</s:RemoteObject>	
+		</s:RemoteObject>
 	</fx:Declarations>
 
 	<fx:Script>
 		<![CDATA[
-			import com.vedovelli.vo.UsuarioVO;
-
 			import com.vedovelli.event.NotificacaoEvent;
 			import com.vedovelli.event.UsuariosEvent;
+			import com.vedovelli.vo.UsuarioVO;
 
 			import mx.collections.ArrayCollection;
 			import mx.controls.Alert;

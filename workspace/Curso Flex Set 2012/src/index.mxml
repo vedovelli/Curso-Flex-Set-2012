@@ -6,8 +6,23 @@
 			   xmlns:vendas="com.vedovelli.view.vendas.*"
 			   xmlns:usuarios="com.vedovelli.view.usuarios.*" 
 			   xmlns:common="com.vedovelli.view.common.*"
+			   xmlns:core="org.swizframework.core.*"
+			   xmlns:config="com.vedovelli.config.*"
 			   currentState="nao_logado"
 			   creationComplete="init(event)">
+
+	<fx:Declarations>
+		<core:Swiz>
+			<core:beanProviders>
+				<config:Beans/>
+			</core:beanProviders>
+			<core:config>
+				<core:SwizConfig
+								 eventPackages="com.vedovelli.event.*"
+								 viewPackages="com.vedovelli.view.*"/>
+			</core:config>
+		</core:Swiz>
+	</fx:Declarations>
 
 	<fx:Script>
 		<![CDATA[
