@@ -1,60 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:SkinnableContainer
-	xmlns:fx="http://ns.adobe.com/mxml/2009" 
-	xmlns:s="library://ns.adobe.com/flex/spark" 
-	xmlns:mx="library://ns.adobe.com/flex/mx" 
-	width="400"
-	visible="{componentVisible}"
-	top="10" right="10"
-	skinClass="com.vedovelli.view.common.skin.NotificacaoSkin">
-	
+					  xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					  xmlns:s="library://ns.adobe.com/flex/spark" 
+					  xmlns:mx="library://ns.adobe.com/flex/mx" 
+					  width="400"
+					  visible="false"
+					  top="10" right="10"
+					  skinClass="com.vedovelli.view.common.skin.NotificacaoSkin">
+
 	<fx:Script>
 		<![CDATA[
+			import com.vedovelli.vo.NotificacaoVO;
 
-			private var _headerText:String = 'Meu header';
-			private var _bodyText:String = 'Meu corpo';
 			private var _timer:Timer;
-			private var _componentVisible:Boolean = false;
-			
+			private var _notificacao:NotificacaoVO;
+
 			private const TIME:int = 5;
-			
-			[Bindable]
-			public function get componentVisible():Boolean
-			{
-				return _componentVisible;
-			}
-
-			public function set componentVisible(value:Boolean):void
-			{
-				if(value){
-					aparecer.play();
-					_timer = new Timer(1000, TIME);
-					_timer.addEventListener(TimerEvent.TIMER, manageTimer);
-					_timer.start();
-				}
-				_componentVisible = value;
-			}
 
 			[Bindable]
-			public function get bodyText():String
+			public function get notificacao():NotificacaoVO
 			{
-				return _bodyText;
+				return _notificacao;
 			}
 
-			public function set bodyText(value:String):void
+			[Inject(source="notificacaoController.notificacao")]
+			public function set notificacao(value:NotificacaoVO):void
 			{
-				_bodyText = value;
-			}
-
-			[Bindable]
-			public function get headerText():String
-			{
-				return _headerText;
-			}
-
-			public function set headerText(value:String):void
-			{
-				_headerText = value;
+				_notificacao = value;
+				aparecer.play();
+				_timer = new Timer(1000, TIME);
+				_timer.addEventListener(TimerEvent.TIMER, manageTimer);
+				_timer.start();
 			}
 
 			protected function manageTimer(event:TimerEvent):void
@@ -63,19 +39,18 @@
 					_timer.reset();
 					_timer.stop();
 					desaparecer.play();
-					componentVisible = false;
 				}
 			}
-			
+
 		]]>
 	</fx:Script>
-	
+
 	<fx:Declarations>
 		<s:Fade id="aparecer" alphaFrom="0" alphaTo="1" duration="800" target="{this}"/>
 		<s:Fade id="desaparecer" alphaFrom="1" alphaTo="0" duration="800" target="{this}"/>
 	</fx:Declarations>
-	
-	<s:Label id="hText" fontSize="16" fontWeight="bold" text="{headerText}"/>
-	<s:Label id="bText" text="{bodyText}"/>
-	
+
+	<s:Label id="hText" fontSize="16" fontWeight="bold" text="{notificacao.header}"/>
+	<s:Label id="bText" text="{notificacao.body}"/>
+
 </s:SkinnableContainer>

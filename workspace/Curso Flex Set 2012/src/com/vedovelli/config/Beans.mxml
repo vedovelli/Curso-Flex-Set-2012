@@ -21,6 +21,7 @@
 		<!-- Controller -->
 		<controller:BaseController id="baseController"/>
 		<controller:UsuariosController id="usuariosController"/>
+		<controller:NotificacaoController id="notificacaoController"/>
 
 		<!-- Remote -->
 		<s:RemoteObject id="ro" 

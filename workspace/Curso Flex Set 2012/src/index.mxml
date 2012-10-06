@@ -39,20 +39,12 @@
 			protected function init(event:FlexEvent):void
 			{
 				this.addEventListener(LoginEvent.LOGADO, login_ok);
-				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
 			}
 
 			protected function login_ok(event:LoginEvent):void
 			{
 				this.currentState = 'logado';
 				_usuario = event.usuario;
-			}
-
-			protected function gerenciar_notificacao(event:NotificacaoEvent):void
-			{
-				notificacao.headerText = event.headerText;
-				notificacao.bodyText = event.bodyText;
-				notificacao.componentVisible = true;
 			}
 
 			protected function logoutHandler(event:MouseEvent):void
