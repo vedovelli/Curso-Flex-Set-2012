@@ -2,15 +2,16 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx"
-					width="100%" height="100%" currentState="login">
-	
+					width="100%" height="100%" currentState="login"
+					creationComplete="init(event)">
+
 	<fx:Declarations>
 		<s:RemoteObject id="ro" 
 						source="AcessoController"
 						destination="zend"
 						endpoint="http://cf.local/php/gateway.php"
 						showBusyCursor="true">
-			
+
 			<s:method name="login" 
 					  result="onLoginResult(event)" 
 					  fault="onLoginFault(event)">
@@ -18,34 +19,35 @@
 					<data>{_usuario}</data>
 				</s:arguments>
 			</s:method>
-			
+
 		</s:RemoteObject>
-		
+
 	</fx:Declarations>
-	
+
 	<fx:Script>
 		<![CDATA[
-			import com.vedovelli.vo.UsuarioVO;
-			
 			import com.vedovelli.event.LoginEvent;
-			
+			import com.vedovelli.util.URLUtil;
+			import com.vedovelli.vo.UsuarioVO;
+
 			import mx.controls.Alert;
+			import mx.events.FlexEvent;
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
-			
+
 			[Bindable]
-			private var _usuario:UsuarioVO = new UsuarioVO();
-			
+			private var _usuario:UsuarioVO;
+
 			protected function recuperar_senha(event:MouseEvent):void
 			{
 				this.currentState = 'recuperar_senha';
 			}
-			
+
 			protected function voltar(event:MouseEvent):void
 			{
 				this.currentState = 'login';
 			}
-			
+
 			protected function onLoginResult(event:ResultEvent):void
 			{
 				if( event.result.retorno is UsuarioVO ){
@@ -57,38 +59,40 @@
 					feedback.text = event.result.retorno;
 				}
 			}
-			
+
 			protected function onLoginFault(event:FaultEvent):void
 			{
 				Alert.show(event.fault.faultString);
 			}
-			
+
 			protected function fazer_login(event:MouseEvent):void
 			{
 				ro.login();
 			}
-			
+
+			protected function init(event:FlexEvent):void
+			{
+				if(URLUtil.getInstance().isLocal){
+					_usuario = new UsuarioVO();
+					_usuario.usuario = 'vedovelli';
+					_usuario.senha = '123';
+					btnLogar.dispatchEvent(new MouseEvent(MouseEvent.CLICK));
+				}
+			}
+
 		]]>
 	</fx:Script>
-	
+
 	<s:states>
 		<s:State name="login"/>
 		<s:State name="recuperar_senha"/>
 	</s:states>
-	
-	<!--
-	<s:transitions>
-		<s:Transition fromState="*" toState="*">
-			<s:Fade alphaFrom="1" alphaTo="0" target="container"/>
-		</s:Transition>
-	</s:transitions>
-	-->
-	
+
 	<s:Panel id="container" width="500" height="225" horizontalCenter="0"
 			 title="Seja bem vindo ao sistema lindo de morrer" verticalCenter="0"
 			 height.login="245" horizontalCenter.login="0" verticalCenter.login="0"
 			 title.recuperar_senha="Recuperação de senha">
-		
+
 		<s:Form includeIn="login" x="10" y="24" width="253" height="172">
 			<s:FormItem width="231" label="Usuario">
 				<s:TextInput text="@{_usuario.usuario}" width="155"/>
@@ -97,16 +101,16 @@
 				<s:TextInput text="@{_usuario.senha}" displayAsPassword="true" width="155"/>
 			</s:FormItem>
 			<s:FormItem width="231">
-				<s:Button label="Logar" click="fazer_login(event)"/>
+				<s:Button id="btnLogar" label="Logar" click="fazer_login(event)"/>
 			</s:FormItem>
 		</s:Form>
-		
+
 		<mx:VRule includeIn="login" x="269" y="15" width="1" height="167"/>
-		
+
 		<s:TextArea includeIn="login" x="278" y="15" width="210" height="83" borderVisible="false"
 					editable="false"
 					text="Caso tenha esquecido sua senha, clique no botão abaixo para que possamos enviar um lembrete&#xd;"/>
-		
+
 		<s:Button includeIn="login" x="278" y="82" width="210" label="Esqueci minha senha"
 				  click="recuperar_senha(event)"/>
 		<s:Button includeIn="recuperar_senha" x="10" y="161" label="voltar" click="voltar(event)"/>
@@ -118,12 +122,12 @@
 				<s:Button label="Enviar link"/>
 			</s:FormItem>
 		</s:Form>
-		
+
 		<s:Label id="feedback" color="#c00000" 
 				 textAlign="center" fontWeight="bold" 
 				 includeIn="login" x="10" y="8" width="251"/>
-		
+
 	</s:Panel>
-	
-	
+
+
 </s:NavigatorContent>

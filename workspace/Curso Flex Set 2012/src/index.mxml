@@ -11,13 +11,11 @@
 
 	<fx:Script>
 		<![CDATA[
-			import com.vedovelli.vo.UsuarioVO;
 			import com.vedovelli.event.LoginEvent;
 			import com.vedovelli.event.NotificacaoEvent;
+			import com.vedovelli.vo.UsuarioVO;
 
-			import mx.controls.Alert;
 			import mx.events.FlexEvent;
-			import mx.utils.ObjectUtil;
 
 			[Bindable]
 			private var _usuario:UsuarioVO;
@@ -30,7 +28,7 @@
 
 			protected function login_ok(event:LoginEvent):void
 			{
-				vs.selectedIndex = 1;
+				this.currentState = 'logado';
 				_usuario = event.usuario;
 			}
 
@@ -41,6 +39,11 @@
 				notificacao.componentVisible = true;
 			}
 
+			protected function logoutHandler(event:MouseEvent):void
+			{
+				this.currentState = 'nao_logado';
+			}
+
 		]]>
 	</fx:Script>
 
@@ -49,11 +52,22 @@
 		<s:State name="nao_logado"/>
 	</s:states>
 
+	<s:transitions>
+		<s:Transition fromState="*" toState="*">
+			<s:CrossFade targets="{[login, app]}"/>
+		</s:Transition>
+	</s:transitions>
+
 	<login:LoginUI id="login" label="Login" includeIn="nao_logado"/>
 
 	<s:Group id="app" width="100%" height="100%" includeIn="logado">
 
-		<s:ButtonBar id="bb" dataProvider="{vs}" x="10" y="10"/>
+		<s:HGroup y="10" left="10" right="10">
+			<s:Button id="btnLogout" label="Logout" click="logoutHandler(event)"/>
+			<s:ButtonBar id="bb" dataProvider="{vs}"/>
+			<s:Spacer width="100%"/>
+			<s:Label text="Usuário logado: {_usuario.usuario}"/>
+		</s:HGroup>
 
 		<mx:ViewStack id="vs" width="100%" height="100%"
 					  paddingBottom="10" paddingLeft="10"
@@ -66,9 +80,6 @@
 		</mx:ViewStack>
 
 		<common:Notificacao id="notificacao"/>
-
-		<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
-				 visible="{vs.selectedIndex > 0}"/>
 
 	</s:Group>
 

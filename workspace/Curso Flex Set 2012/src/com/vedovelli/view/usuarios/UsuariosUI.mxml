@@ -139,7 +139,9 @@
 
 			protected function listaNiveis_valueCommitHandler(event:FlexEvent):void
 			{
-				_usuario.nivel = listaNiveis.selectedItem.data;
+				if(_usuario != null){
+					_usuario.nivel = listaNiveis.selectedItem.data;
+				}
 			}
 
 			protected function onatualizarResult(event:ResultEvent):void
@@ -183,7 +185,9 @@
 					{data: 'usuario', label: 'Usuário'}
 					]);
 				listaNiveis.selectedIndex= 0;
-				_usuario.nivel = listaNiveis.selectedItem.data;
+				if(_usuario != null){
+					_usuario.nivel = listaNiveis.selectedItem.data;
+				}
 			}
 
 			protected function removerUsuario(event:UsuariosEvent):void
