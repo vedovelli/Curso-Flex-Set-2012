@@ -33,7 +33,7 @@ package com.vedovelli.presentation
 		public function set remover(value:Boolean):void
 		{
 			_remover = value;
-			if(datagrid!=null){
+			if(datagrid!=null && datagrid.selectedIndex > -1){
 				lista.removeItemAt(datagrid.selectedIndex);
 			}
 			if(dispatcher!= null){

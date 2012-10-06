@@ -142,7 +142,7 @@ package com.vedovelli.presentation
 			selecionarDDList();
 		}
 
-		public function btnSalvar_clickHandler(event:MouseEvent):void
+		public function btnSalvar_clickHandler():void
 		{
 			var ev:UsuariosEvent;
 			if(_usuario.id && _usuario.id > 0){

@@ -99,6 +99,9 @@ class EmpresaController{
 				}
 			}
 
+
+			$this->gerenciar_socios($empresa->id, $empresa->socios);
+
 			$empresa->socios = $socios_controller->listar($model->id);
 			
 			#retorna a empresa
@@ -106,6 +109,26 @@ class EmpresaController{
 		} catch (Exception $e) {
 			return $e;
 		}
+	}
+
+	private function gerenciar_socios($empresa_id, $da_interface){
+		
+		$socios_controller = new SocioController();
+		$do_bancodados =  $socios_controller->listar($empresa_id);
+
+		// file_put_contents('_1.txt', print_r($da_interface, true));
+		// file_put_contents('_2.txt', print_r($do_bancodados, true));
+
+		if( count($do_bancodados) > count($da_interface) ){
+			$a_remover = array_diff($do_bancodados['id'], $da_interface['id']);
+		} else {
+			$a_remover = array_diff($da_interface['id'], $do_bancodados['id']);
+		}
+		file_put_contents('_.txt', print_r($a_remover, true));
+		foreach ($a_remover as $key => $value) {
+			
+		}
+
 	}
 
 	public function remover($id){
