@@ -53,15 +53,16 @@
 			<s:TextInput text="@{pm.usuario.senha}"/>
 		</s:FormItem>
 		<s:FormItem label="Nivel">
-			<s:DropDownList id="cbNiveis"
+			<s:DropDownList 
 							creationComplete="pm.listaNiveis_creationCompleteHandler(event)"
 							dataProvider="{pm.listaNiveis}"
 							valueCommit="pm.listaNiveis_valueCommitHandler(event)"></s:DropDownList>
 		</s:FormItem>
 		<s:FormItem>
 			<s:HGroup>
-				<s:Button id="btnSalvar" label="Salvar" click="pm.btnSalvar_clickHandler(event)"/>
-				<s:Button id="btnLimpar" enabled="{listaUsuarios.selectedIndex > -1}" label="Limpar" click="pm.limpar()"/>
+				<s:Button label="Salvar" click="pm.btnSalvar_clickHandler(event)"/>
+				<s:Button enabled="{listaUsuarios.selectedIndex > -1}" 
+						  label="Limpar" click="pm.limpar()"/>
 			</s:HGroup>
 		</s:FormItem>
 	</s:Form>
