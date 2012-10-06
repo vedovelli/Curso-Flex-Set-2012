@@ -7,6 +7,9 @@
 				   xmlns:controller="com.vedovelli.controller.*">
 	<fx:Script>
 		<![CDATA[
+			import com.vedovelli.pm.BasePM;
+			import com.vedovelli.pm.UsuariosPM;
+
 			import mx.controls.Alert;
 			import mx.rpc.events.FaultEvent;
 
@@ -19,6 +22,10 @@
 	</fx:Script>
 
 	<fx:Declarations>
+
+		<!-- Presentation Model -->
+		<swiz:Prototype type="{BasePM}" id="basePM"/>
+		<swiz:Prototype type="{UsuariosPM}" id="usuariosPM"/>
 
 		<!-- Controller -->
 		<controller:BaseController id="baseController"/>
@@ -38,3 +45,4 @@
 	</fx:Declarations>
 
 </swiz:BeanProvider>
+

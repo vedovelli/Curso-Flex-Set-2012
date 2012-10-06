@@ -30,16 +30,18 @@
 			{
 				_notificacao = value;
 				aparecer.play();
-				_timer = new Timer(5000);
+				_timer = new Timer(1000, TIME);
 				_timer.addEventListener(TimerEvent.TIMER, manageTimer);
 				_timer.start();
 			}
 
 			protected function manageTimer(event:TimerEvent):void
 			{
-				_timer.reset();
-				_timer.stop();
-				desaparecer.play();
+				if(_timer.currentCount == 5){
+					_timer.reset();
+					_timer.stop();
+					desaparecer.play();
+				}
 			}
 
 		]]>
