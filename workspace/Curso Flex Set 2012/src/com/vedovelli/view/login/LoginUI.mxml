@@ -27,7 +27,7 @@
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
 			
-			import events.LoginEvent;
+			import com.vedovelli.event.LoginEvent;
 			
 			import mx.controls.Alert;
 			import mx.rpc.events.FaultEvent;
