@@ -6,56 +6,72 @@
 			   xmlns:vendas="com.vedovelli.view.vendas.*"
 			   xmlns:usuarios="com.vedovelli.view.usuarios.*" 
 			   xmlns:common="com.vedovelli.view.common.*"
+			   currentState="nao_logado"
 			   creationComplete="init(event)">
-	
+
 	<fx:Script>
 		<![CDATA[
 			import com.vedovelli.vo.UsuarioVO;
-			
 			import com.vedovelli.event.LoginEvent;
 			import com.vedovelli.event.NotificacaoEvent;
-			
+
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.utils.ObjectUtil;
-			
+
 			[Bindable]
 			private var _usuario:UsuarioVO;
-				
+
 			protected function init(event:FlexEvent):void
 			{
 				this.addEventListener(LoginEvent.LOGADO, login_ok);
 				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
 			}
-			
+
 			protected function login_ok(event:LoginEvent):void
 			{
 				vs.selectedIndex = 1;
 				_usuario = event.usuario;
 			}
-			
+
 			protected function gerenciar_notificacao(event:NotificacaoEvent):void
 			{
 				notificacao.headerText = event.headerText;
 				notificacao.bodyText = event.bodyText;
 				notificacao.componentVisible = true;
 			}
-			
+
 		]]>
-	</fx:Script>	
-	
-	<mx:ViewStack id="vs" width="100%" height="100%"
-				  paddingBottom="10" paddingLeft="10"
-				  paddingRight="10" paddingTop="10">
-		<login:LoginUI id="login"/>
-		<usuarios:UsuariosUI id="usuarios"/>
-		<vendas:VendasUI id="vendas"/>
-	</mx:ViewStack>
-	
-	<common:Notificacao id="notificacao"/>
-	
-	<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
-			 visible="{vs.selectedIndex > 0}"/>
-	
+	</fx:Script>
+
+	<s:states>
+		<s:State name="logado"/>
+		<s:State name="nao_logado"/>
+	</s:states>
+
+	<login:LoginUI id="login" label="Login" includeIn="nao_logado"/>
+
+	<s:Group id="app" width="100%" height="100%" includeIn="logado">
+
+		<s:ButtonBar id="bb" dataProvider="{vs}" x="10" y="10"/>
+
+		<mx:ViewStack id="vs" width="100%" height="100%"
+					  paddingBottom="10" paddingLeft="10"
+					  paddingRight="10" paddingTop="50">
+
+			<usuarios:UsuariosUI id="usuarios" label="Usuários"/>
+
+			<vendas:VendasUI id="vendas" label="Vendas"/>
+
+		</mx:ViewStack>
+
+		<common:Notificacao id="notificacao"/>
+
+		<s:Label text="Usuário logado: {_usuario.usuario}" right="10" bottom="10"
+				 visible="{vs.selectedIndex > 0}"/>
+
+	</s:Group>
+
+
 </s:Application>
 

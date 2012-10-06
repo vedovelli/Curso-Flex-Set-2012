@@ -14,13 +14,7 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="index_aula1_twoway.mxml"/>
     <application path="index.mxml"/>
-    <application path="index_aula1_p1.mxml"/>
-    <application path="index_aula1_p2.mxml"/>
-    <application path="index_aula1_p3.mxml"/>
-    <application path="index_aula_p4.mxml"/>
-    <application path="index_aula1_p5.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>
