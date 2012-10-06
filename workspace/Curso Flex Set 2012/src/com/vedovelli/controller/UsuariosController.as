@@ -1,7 +1,11 @@
 package com.vedovelli.controller
 {
+	import com.vedovelli.event.NotificacaoEvent;
 	import com.vedovelli.event.UsuariosEvent;
+	import com.vedovelli.vo.NotificacaoVO;
 	import com.vedovelli.vo.UsuarioVO;
+
+	import flash.events.IEventDispatcher;
 
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
@@ -18,7 +22,6 @@ package com.vedovelli.controller
 		public var usuarioId:int;
 		public var removido:Boolean;
 		public var limpar:Boolean;
-
 
 		/* LISTAR USUARIOS ************************************************/
 		[EventHandler(event="UsuariosEvent.LISTAR")]
@@ -44,6 +47,7 @@ package com.vedovelli.controller
 			usuario = event.result as UsuarioVO;
 			lista.addItem(usuario);
 			limpar = !limpar;
+			notificar('USUÁRIO', 'Usuário criado com sucesso!');
 		}
 
 		/* ATUALIZAR USUARIO ************************************************/
@@ -57,6 +61,7 @@ package com.vedovelli.controller
 		{
 			usuario = event.result as UsuarioVO;
 			limpar = !limpar;
+			notificar('USUÁRIO', 'Usuário atualizado com sucesso!');
 		}
 
 		/* REMOVER USUARIO ************************************************/
@@ -84,8 +89,25 @@ package com.vedovelli.controller
 		{
 			if(event.result){
 				removido = !removido;
+				notificar('USUÁRIO', 'Usuário removido com sucesso!');
 			}
 		}
+
+		private function notificar(header:String, body:String):void
+		{
+			var notif:NotificacaoVO;
+			var ev:NotificacaoEvent;
+
+			notif = new NotificacaoVO();
+			notif.body = body;
+			notif.header = header;
+
+			ev = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
+			ev.notificacao = notif;
+
+			dispatcher.dispatchEvent(ev);	
+		}
+
 	}
 }
 

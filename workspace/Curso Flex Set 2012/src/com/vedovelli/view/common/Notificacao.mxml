@@ -12,6 +12,8 @@
 		<![CDATA[
 			import com.vedovelli.vo.NotificacaoVO;
 
+			import mx.events.EffectEvent;
+
 			private var _timer:Timer;
 			private var _notificacao:NotificacaoVO;
 
@@ -23,23 +25,21 @@
 				return _notificacao;
 			}
 
-			[Inject(source="notificacaoController.notificacao")]
+			[Inject(source="notificacaoController.notificacao", bind="true")]
 			public function set notificacao(value:NotificacaoVO):void
 			{
 				_notificacao = value;
 				aparecer.play();
-				_timer = new Timer(1000, TIME);
+				_timer = new Timer(5000);
 				_timer.addEventListener(TimerEvent.TIMER, manageTimer);
 				_timer.start();
 			}
 
 			protected function manageTimer(event:TimerEvent):void
 			{
-				if(_timer.currentCount == TIME){
-					_timer.reset();
-					_timer.stop();
-					desaparecer.play();
-				}
+				_timer.reset();
+				_timer.stop();
+				desaparecer.play();
 			}
 
 		]]>
