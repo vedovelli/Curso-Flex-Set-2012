@@ -5,203 +5,112 @@
 					width="100%" height="100%"
 					creationComplete="init(event)">
 
-	<fx:Declarations>
-		<s:RemoteObject id="ro" 
-						source="UsuarioController"
-						destination="zend"
-						endpoint="http://cf.local/php/gateway.php"
-						fault="onFault(event)"
-						showBusyCursor="true">
-
-			<s:method name="listar" 
-					  result="onlistarResult(event)">
-			</s:method>
-
-			<s:method name="criar" 
-					  result="ongravarResult(event)">
-				<s:arguments>
-					<usuario>{_usuario}</usuario>
-				</s:arguments>
-			</s:method>
-
-			<s:method name="atualizar" 
-					  result="onatualizarResult(event)">
-				<s:arguments>
-					<usuario>{_usuario}</usuario>
-				</s:arguments>
-			</s:method>
-
-			<s:method name="remover" 
-					  result="onremoverResult(event)">
-				<s:arguments>
-					<id>{_usuarioId}</id>
-				</s:arguments>
-			</s:method>
-
-		</s:RemoteObject>
-	</fx:Declarations>
-
 	<fx:Script>
 		<![CDATA[
-			import com.vedovelli.event.NotificacaoEvent;
 			import com.vedovelli.event.UsuariosEvent;
 			import com.vedovelli.vo.UsuarioVO;
 
 			import mx.collections.ArrayCollection;
-			import mx.controls.Alert;
-			import mx.events.CloseEvent;
 			import mx.events.FlexEvent;
-			import mx.rpc.events.FaultEvent;
-			import mx.rpc.events.ResultEvent;
 
 			[Bindable]
-			private var _usuarioId:int;
+			public var usuarioId:int;
 
 			[Bindable]
-			private var _lista:ArrayCollection;
+			public var listaNiveis:ArrayCollection;
 
 			[Bindable]
-			private var _listaNiveis:ArrayCollection;
+			[Inject(source="usuariosController.usuario", bind="true")]
+			public var usuario:UsuarioVO;
 
 			[Bindable]
-			private var _usuario:UsuarioVO;
+			[Inject(source="usuariosController.lista", bind="true")]
+			public var lista:ArrayCollection;
+
+			[Inject(source="usuariosController.removido", bind="true")]
+			public function set removido(value:Boolean):void
+			{
+				if(lista != null && listaUsuarios != null){
+					lista.removeItemAt(listaUsuarios.selectedIndex);
+					limpar();
+				}
+			}
+
+			[Inject(source="usuariosController.limpar", bind="true")]
+			public function set setLimpar(value:Boolean):void
+			{
+				limpar();
+			}
 
 			protected function init(event:FlexEvent):void
 			{
-				this.addEventListener(UsuariosEvent.REMOVER, removerUsuario);
-				_usuario = new UsuarioVO();
-				ro.listar();
-
-
-
+				usuario = new UsuarioVO();
+				this.dispatchEvent( new UsuariosEvent(UsuariosEvent.LISTAR) );
 			}
 
 			protected function selecionarDDList():void
 			{
 				var i:int = 0;
-				var length:int = _listaNiveis.length;
+				var length:int = listaNiveis.length;
 
 				for (i; i < length; i++) 
 				{
-					if(_usuario != null){
-						if( _listaNiveis.getItemAt(i).data == _usuario.nivel ){
-							listaNiveis.selectedIndex = i;
+					if(usuario != null){
+						if( listaNiveis.getItemAt(i).data == usuario.nivel ){
+							cbNiveis.selectedIndex = i;
 							break;
 						}
 					}
 				}
-
-			}
-
-			protected function onlistarResult(event:ResultEvent):void
-			{
-				_lista = new ArrayCollection(event.result as Array);
-			}
-
-			protected function onFault(event:FaultEvent):void
-			{
-				Alert.show('Falha');
 			}
 
 			protected function listaUsuarios_valueCommitHandler(event:FlexEvent):void
 			{
-				_usuario = listaUsuarios.selectedItem as UsuarioVO;
+				usuario = listaUsuarios.selectedItem as UsuarioVO;
 				selecionarDDList();
 			}
 
 			protected function btnSalvar_clickHandler(event:MouseEvent):void
 			{
-				if(_usuario.id && _usuario.id > 0){
-					ro.atualizar()
+				var ev:UsuariosEvent;
+				if(usuario.id && usuario.id > 0){
+					ev = new UsuariosEvent(UsuariosEvent.ATUALIZAR);
 				} else {
-					ro.criar();
+					ev = new UsuariosEvent(UsuariosEvent.CRIAR);
 				}
+				ev.usuario = usuario;
+				dispatchEvent(ev);
 			}
 
 			private function limpar():void
 			{
-				listaUsuarios.selectedIndex = -1;
-				listaNiveis.selectedIndex = 0;
-				_usuario = new UsuarioVO();
-				_usuario.nivel = listaNiveis.selectedItem.data;
-			}
-
-			protected function ongravarResult(event:ResultEvent):void
-			{
-				_lista.addItemAt(event.result, 0);
-				limpar();
-
-				var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
-				ev.headerText = 'Usuário';
-				ev.bodyText = 'Usuário criado com sucesso!';
-
-				this.dispatchEvent(ev);
-
+				if(listaUsuarios!=null){
+					listaUsuarios.selectedIndex = -1;
+				}
+				if(cbNiveis != null){
+					cbNiveis.selectedIndex = 0;
+					usuario = new UsuarioVO();
+					usuario.nivel = cbNiveis.selectedItem.data;
+				}
 			}
 
 			protected function listaNiveis_valueCommitHandler(event:FlexEvent):void
 			{
-				if(_usuario != null){
-					_usuario.nivel = listaNiveis.selectedItem.data;
-				}
-			}
-
-			protected function onatualizarResult(event:ResultEvent):void
-			{
-				if(event.result is UsuarioVO){
-					var index:int = listaUsuarios.selectedIndex;
-					_lista.setItemAt(event.result, index);
-					limpar();
-					var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
-					ev.headerText = 'Usuário';
-					ev.bodyText = 'Usuário atualizado com sucesso!';
-
-					this.dispatchEvent(ev);
-				}
-			}
-
-			protected function onremoverResult(event:ResultEvent):void
-			{
-				if(event.result){
-					_lista.removeItemAt(listaUsuarios.selectedIndex);
-					limpar();
-					var ev:NotificacaoEvent = new NotificacaoEvent(NotificacaoEvent.MOSTRAR);
-					ev.headerText = 'Usuário';
-					ev.bodyText = 'Usuário removido com sucesso!';
-
-					this.dispatchEvent(ev);
-				}
-			}
-
-			private function fazer_remocao(event:CloseEvent):void
-			{
-				if(event.detail == Alert.YES){
-					ro.remover();
+				if(usuario != null){
+					usuario.nivel = cbNiveis.selectedItem.data;
 				}
 			}
 
 			protected function listaNiveis_creationCompleteHandler(event:FlexEvent):void
 			{
-				_listaNiveis = new ArrayCollection([
+				listaNiveis = new ArrayCollection([
 					{data: 'administrador', label: 'Administrador'},
 					{data: 'usuario', label: 'Usuário'}
 					]);
-				listaNiveis.selectedIndex= 0;
-				if(_usuario != null){
-					_usuario.nivel = listaNiveis.selectedItem.data;
+				cbNiveis.selectedIndex= 0;
+				if(usuario != null){
+					usuario.nivel = cbNiveis.selectedItem.data;
 				}
-			}
-
-			protected function removerUsuario(event:UsuariosEvent):void
-			{
-				_usuarioId = event.usuario.id;
-				Alert.show(
-					'Tem certeza que deseja excluir '+ _usuario.usuario + '?', 
-					'ATENÇÃO', 
-					Alert.YES|Alert.NO, 
-					null, 
-					fazer_remocao 
-					);
 			}
 
 		]]>
@@ -211,7 +120,7 @@
 		<s:HorizontalLayout/>
 	</s:layout>
 
-	<s:DataGrid id="listaUsuarios" dataProvider="{_lista}" 
+	<s:DataGrid id="listaUsuarios" dataProvider="{lista}" 
 				width="100%" height="100%" 
 				valueCommit="listaUsuarios_valueCommitHandler(event)">
 		<s:columns>
@@ -228,15 +137,15 @@
 	<s:Form width="100%" height="100%">
 		<s:FormHeading label="Gerenciamento de Usuários"/>
 		<s:FormItem label="Usuario">
-			<s:TextInput text="@{_usuario.usuario}"/>
+			<s:TextInput text="@{usuario.usuario}"/>
 		</s:FormItem>
 		<s:FormItem label="Senha">
-			<s:TextInput text="@{_usuario.senha}"/>
+			<s:TextInput text="@{usuario.senha}"/>
 		</s:FormItem>
 		<s:FormItem label="Nivel">
-			<s:DropDownList id="listaNiveis"
+			<s:DropDownList id="cbNiveis"
 							creationComplete="listaNiveis_creationCompleteHandler(event)"
-							dataProvider="{_listaNiveis}"
+							dataProvider="{listaNiveis}"
 							valueCommit="listaNiveis_valueCommitHandler(event)"></s:DropDownList>
 		</s:FormItem>
 		<s:FormItem>

@@ -6,22 +6,22 @@
 			   xmlns:vendas="com.vedovelli.view.vendas.*"
 			   xmlns:usuarios="com.vedovelli.view.usuarios.*" 
 			   xmlns:common="com.vedovelli.view.common.*"
-			   xmlns:core="org.swizframework.core.*"
+			   xmlns:swiz="http://swiz.swizframework.org"
 			   xmlns:config="com.vedovelli.config.*"
 			   currentState="nao_logado"
 			   creationComplete="init(event)">
 
 	<fx:Declarations>
-		<core:Swiz>
-			<core:beanProviders>
+		<swiz:Swiz>
+			<swiz:beanProviders>
 				<config:Beans/>
-			</core:beanProviders>
-			<core:config>
-				<core:SwizConfig
+			</swiz:beanProviders>
+			<swiz:config>
+				<swiz:SwizConfig 
 								 eventPackages="com.vedovelli.event.*"
 								 viewPackages="com.vedovelli.view.*"/>
-			</core:config>
-		</core:Swiz>
+			</swiz:config>
+		</swiz:Swiz>
 	</fx:Declarations>
 
 	<fx:Script>
@@ -40,7 +40,6 @@
 			{
 				this.addEventListener(LoginEvent.LOGADO, login_ok);
 				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
-				this.dispatchEvent( new UsuariosEvent(UsuariosEvent.LISTAR) );
 			}
 
 			protected function login_ok(event:LoginEvent):void

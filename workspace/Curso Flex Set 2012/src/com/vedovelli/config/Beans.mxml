@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<core:BeanProvider xmlns:fx="http://ns.adobe.com/mxml/2009" 
+<swiz:BeanProvider xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
-				   xmlns:core="org.swizframework.core.*"
+				   xmlns:swiz="http://swiz.swizframework.org"
 				   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ns="http://swiz.swizframework.org" xmlns:controller="com.vedovelli.controller.*">
 	<fx:Script>
 		<![CDATA[
@@ -34,4 +34,4 @@
 
 	</fx:Declarations>
 
-</core:BeanProvider>
+</swiz:BeanProvider>
