@@ -71,6 +71,9 @@
 				this.addEventListener(UsuariosEvent.REMOVER, removerUsuario);
 				_usuario = new UsuarioVO();
 				ro.listar();
+
+
+
 			}
 
 			protected function selecionarDDList():void

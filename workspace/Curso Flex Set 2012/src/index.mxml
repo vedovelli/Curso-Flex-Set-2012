@@ -28,6 +28,7 @@
 		<![CDATA[
 			import com.vedovelli.event.LoginEvent;
 			import com.vedovelli.event.NotificacaoEvent;
+			import com.vedovelli.event.UsuariosEvent;
 			import com.vedovelli.vo.UsuarioVO;
 
 			import mx.events.FlexEvent;
@@ -39,6 +40,7 @@
 			{
 				this.addEventListener(LoginEvent.LOGADO, login_ok);
 				this.addEventListener(NotificacaoEvent.MOSTRAR, gerenciar_notificacao);
+				this.dispatchEvent( new UsuariosEvent(UsuariosEvent.LISTAR) );
 			}
 
 			protected function login_ok(event:LoginEvent):void

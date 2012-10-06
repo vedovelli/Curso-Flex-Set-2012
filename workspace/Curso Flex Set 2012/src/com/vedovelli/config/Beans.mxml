@@ -2,9 +2,35 @@
 <core:BeanProvider xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				   xmlns:s="library://ns.adobe.com/flex/spark" 
 				   xmlns:core="org.swizframework.core.*"
-				   xmlns:mx="library://ns.adobe.com/flex/mx">
+				   xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:ns="http://swiz.swizframework.org" xmlns:controller="com.vedovelli.controller.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+
+			protected function onFault(event:FaultEvent):void
+			{
+				Alert.show( event.fault.faultDetail, event.fault.faultString );
+			}
+
+		]]>
+	</fx:Script>
 
 	<fx:Declarations>
+
+		<!-- Controller -->
+		<controller:BaseController id="baseController"/>
+		<controller:UsuariosController id="usuariosController"/>
+
+		<!-- Remote -->
+		<s:RemoteObject id="ro" 
+						source="roSource"
+						destination="zend"
+						endpoint="http://cf.local/php/gateway.php"
+						fault="onFault(event)"
+						showBusyCursor="true"/>
+
+		<ns:ServiceHelper id="sh"/>
 
 	</fx:Declarations>
 
